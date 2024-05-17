@@ -88,7 +88,7 @@ function Caption() {
 
   return (
     <div className="px-12 h-full w-full py-7">
-      <div className="h-full w-full min-h-0 overflow-y-auto">
+      {/* <div className="h-full w-full min-h-0 overflow-y-auto">
         {fetchCaptionsResult.isSuccess
           ? fetchCaptionsResult.data.map((caption) => {
               return (
@@ -121,7 +121,7 @@ function Caption() {
               );
             })
           : null}
-      </div>
+      </div> */}
     </div>
   );
 }

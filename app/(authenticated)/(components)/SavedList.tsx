@@ -48,7 +48,7 @@ function SavedList() {
 
   return (
     <div className="lg:py-10 h-full w-full lg:pr-10">
-      <Card className="h-full w-full rounded-2xl bg-gray-50 shadow-none">
+      {/* <Card className="h-full w-full rounded-2xl bg-gray-50 shadow-none">
         <Typography variant="h5" className="p-7">
           Saved Phrases
         </Typography>
@@ -97,7 +97,7 @@ function SavedList() {
             )}
           </>
         ) : null}
-      </Card>
+      </Card> */}
     </div>
   );
 }

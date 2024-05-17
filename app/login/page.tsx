@@ -50,7 +50,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col px-5 lg:px-28 py-5 lg:py-14">
-      <div className="flex flex-row justify-between items-center">
+      {/* <div className="flex flex-row justify-between items-center">
         <Typography variant="h5">Phrase Bank</Typography>
         <Button
           variant="outlined"
@@ -151,7 +151,7 @@ export default function LoginPage() {
             </Tooltip>
           </li>
         </ul>
-      </footer>
+      </footer> */}
     </div>
   );
 }
