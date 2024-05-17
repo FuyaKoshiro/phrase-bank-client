@@ -33,9 +33,9 @@ export default function HomePage() {
     <div className="flex flex-col lg:flex-row h-screen w-screen relative">
       {/* NavBar on the left for desktop, and top for mobile */}
       <div className="lg:hidden flex flex-row justify-between items-center w-full py-2 px-2">
-        <IconButton variant="text" onClick={handleClickOpenSideNavBar}>
+        {/* <IconButton variant="text" onClick={handleClickOpenSideNavBar}>
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
 
         <Drawer
           open={openSideNavBar}
@@ -49,26 +49,26 @@ export default function HomePage() {
         <div />
       </div>
 
-      <div className="hidden w-64 lg:block h-full">
+      {/* <div className="hidden w-64 lg:block h-full">
         <SideNavBar />
-      </div>
+      </div> */}
 
       {/* VideoPlayer */}
-      <div className="w-[100%] lg:flex-1 h-full flex flex-col">
+      {/* <div className="w-[100%] lg:flex-1 h-full flex flex-col">
         <div className="flex-1 lg:h-[66%]">
           <VideoPlayer />
         </div>
         <div className="h-96 lg:h-[34%]">
           <Caption />
         </div>
-      </div>
+      </div> */}
 
       {/* Saved List */}
-      <div className="block lg:hidden absolute bottom-5 right-5">
+      {/* <div className="block lg:hidden absolute bottom-5 right-5">
         <Button onClick={handleClickOpenSavedList}>Saved List</Button>
-      </div>
+      </div> */}
 
-      {openSavedList ? (
+      {/* {openSavedList ? (
         <div className="absolute bottom-4 right-3 left-3 flex-col lg:w-[25%]">
           <Card className="bg-transparent shadow-none h-80">
             <div className="w-full flex flex-row justify-end items-center">
@@ -82,7 +82,7 @@ export default function HomePage() {
       ) : null}
       <div className="hidden lg:block lg:w-[25%] h-full">
         <SavedList />
-      </div>
+      </div> */}
     </div>
   );
 }
