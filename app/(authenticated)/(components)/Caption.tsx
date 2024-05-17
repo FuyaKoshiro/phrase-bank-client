@@ -3,7 +3,7 @@
 import { useFetchCaptions } from "@/hooks/youTube/youTube";
 import React, { useEffect, useRef } from "react";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
-import { Button, Spinner, Typography } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 import { Caption as CaptionType } from "@/types/Caption";
 import {
   checkIfPhraseExists,
@@ -89,11 +89,6 @@ function Caption() {
   return (
     <div className="px-12 h-full w-full py-7">
       <div className="h-full w-full min-h-0 overflow-y-auto">
-        {videoId && fetchCaptionsResult.isLoading ? (
-          <div className="h-full w-full flex flex-row items-center justify-center">
-            <Spinner />
-          </div>
-        ) : null}
         {fetchCaptionsResult.isSuccess
           ? fetchCaptionsResult.data.map((caption) => {
               return (
