@@ -16,7 +16,9 @@ interface FirebaseAuthProviderProps {
   children: React.ReactNode;
 }
 
-export function FirebaseAuthProvider({ children }: FirebaseAuthProviderProps) {
+export default function FirebaseAuthProvider({
+  children,
+}: FirebaseAuthProviderProps) {
   const router = useRouter();
   const userStore = useUserStore();
 
@@ -51,15 +53,7 @@ export function FirebaseAuthProvider({ children }: FirebaseAuthProviderProps) {
     });
 
     return () => unsubscribe();
-  }, [
-    checkIfUserExistsResult,
-    createUserResult,
-    router,
-    userStore,
-    fetchSelfResult,
-  ]);
+  }, []);
 
   return <>{children}</>;
 }
-
-export default FirebaseAuthProvider;
