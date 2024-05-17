@@ -79,7 +79,7 @@ export default function SideNavBar() {
 
   return (
     <div className="h-full w-full flex flex-col justify-between items-stretch">
-      <List className="h-full w-full bg-gray-50 justify-start min-h-0 overflow-y-auto">
+      {/* <List className="h-full w-full bg-gray-50 justify-start min-h-0 overflow-y-auto">
         <ListItem onClick={handleOpen}>
           <ListItemPrefix>
             <div className="h-5 w-5 bg-black flex flex-row justify-center items-center">
@@ -147,7 +147,7 @@ export default function SideNavBar() {
         <ListItem onClick={handleClickSignOutButton}>
           <p className="text-start text-sm">Sign Out</p>
         </ListItem>
-      </List>
+      </List> */}
     </div>
   );
 }
