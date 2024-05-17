@@ -19,12 +19,12 @@ export default function VideoPlayer() {
   );
 
   useEffect(() => {
-    if (fetchVideoDataFromYouTubeResult.isSuccess) {
+    if (fetchVideoDataFromYouTubeResult.data) {
       videoPlayerStore.setVideoTitle(
         fetchVideoDataFromYouTubeResult.data.title
       );
     }
-  }, [fetchVideoDataFromYouTubeResult, videoPlayerStore]);
+  }, [fetchVideoDataFromYouTubeResult.data]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
