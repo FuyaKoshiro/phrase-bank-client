@@ -2,19 +2,6 @@
 
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import {
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Avatar,
-  Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Input,
-} from "@material-tailwind/react";
 import { useFetchPhrasesByUserId } from "@/hooks/phrase/phrase";
 import { useFetchVideos } from "@/hooks/video/video";
 import {
@@ -25,6 +12,23 @@ import {
 import { useUserStore } from "@/stores/userStore";
 import { useSignOut } from "@/hooks/auth/auth";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { AvatarFallback } from "@radix-ui/react-avatar";
+import { Input } from "@/components/ui/input";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function SideNavBar() {
   const [open, setOpen] = useState<boolean>(false);
@@ -51,6 +55,10 @@ export default function SideNavBar() {
         )
       : null;
 
+  function handleClickAddVideoButton() {
+    handleOpen();
+  }
+
   async function handleClickVideoCardButton(videoId: string) {
     videoPlayerStore.setVideoId(videoId);
   }
@@ -73,81 +81,72 @@ export default function SideNavBar() {
     const videoId = extractVideoIdFromUrl(videoUrl);
     const validatedVideoId = validateVideoId(videoId);
     videoPlayerStore.setVideoId(validatedVideoId);
-
-    handleOpen();
   }
 
   return (
-    <div className="h-full w-full flex flex-col justify-between items-stretch">
-      {/* <List className="h-full w-full bg-gray-50 justify-start min-h-0 overflow-y-auto">
-        <ListItem onClick={handleOpen}>
-          <ListItemPrefix>
-            <div className="h-5 w-5 bg-black flex flex-row justify-center items-center">
-              <div className="bg-white h-2 w-2" />
+    <div className="h-full w-full flex flex-col justify-between items-stretch bg-gray-50">
+      <p className=" text-6xl text-black">{open}</p>
+      <div className="flex-1 w-full min-h-0 overflow-y-auto">
+        <Dialog>
+          <DialogTrigger className="hover:bg-accent hover:text-accent-foreground w-full p-5 flex flex-row gap-2 justify-between items-center">
+            <div className="flex flex-row items-center gap-2 justify-start">
+              <div className="h-5 w-5 bg-black flex flex-row justify-center items-center">
+                <div className="bg-white h-2 w-2" />
+              </div>
+              <p className="text-sm font-bold">Phrase Bank</p>
             </div>
-          </ListItemPrefix>
-
-          <p className="text-sm font-bold">Phrase Bank</p>
-
-          <ListItemSuffix>
             <AddIcon />
-          </ListItemSuffix>
-        </ListItem>
-
-        <Dialog open={open} handler={handleOpen}>
-          <DialogHeader className="px-5">New Video</DialogHeader>
-          <DialogBody>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <p className="text-lg font-bold">Add Video</p>
+            </DialogHeader>
             <Input
-              label="YouTube Video URL"
-              variant="outlined"
-              crossOrigin={undefined}
+              placeholder="YouTube Video URL"
               onChange={handleVideoUrlInputChange}
             />
-          </DialogBody>
-          <DialogFooter>
-            <Button
-              variant="text"
-              color="black"
-              onClick={handleOpen}
-              className="mr-1"
-            >
-              <span>Cancel</span>
-            </Button>
-            <Button
-              variant="gradient"
-              color="black"
-              onClick={() => handleClickSubmitButton(videoUrl)}
-            >
-              <span>Submit</span>
-            </Button>
-          </DialogFooter>
+            <DialogFooter>
+              <Button
+                color="black"
+                onClick={() => handleClickSubmitButton(videoUrl)}
+              >
+                <span>Submit</span>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
         </Dialog>
 
         {savedVideosWithDate
           ? savedVideosWithDate.map((savedVideo) => (
-              <ListItem
+              <Button
                 key={savedVideo.videoId}
-                className="py-2"
+                variant="ghost"
+                className="py-2 w-full"
                 onClick={() => handleClickVideoCardButton(savedVideo.videoId)}
               >
-                <p className="line-clamp-1 text-start text-sm">
+                <p className="line-clamp-1 text-start text-sm w-full">
                   {savedVideo.title}
                 </p>
-              </ListItem>
+              </Button>
             ))
           : null}
-      </List>
-      <List className="bg-gray-50">
-        <ListItem>
-          <div className="flex flex-row gap-2 justify-start items-center w-full h-full">
-            <Avatar src={userStore.user?.avatar} className="h-5 w-5" />
-            <p className="text-start">{userStore.user?.name}</p>
-          </div>
-        </ListItem>
-        <ListItem onClick={handleClickSignOutButton}>
-          <p className="text-start text-sm">Sign Out</p>
-        </ListItem>
-      </List> */}
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex flex-row items-center gap-5 w-full py-2 px-4 hover:bg-accent hover:text-accent-foreground">
+          <Avatar className="h-5 w-5 bg-accent flex flex-row items-center justify-center">
+            <AvatarImage src={userStore.user?.avatar} alt="User Avatar" />
+            <AvatarFallback>G</AvatarFallback>
+          </Avatar>
+          <p className="text-start">{userStore.user?.name}</p>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>
+            <Button variant="ghost" onClick={handleClickSignOutButton}>
+              <p className="text-start text-sm">Sign Out</p>
+            </Button>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

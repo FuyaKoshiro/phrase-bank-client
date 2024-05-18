@@ -1,6 +1,5 @@
 "use client";
 
-import { ThemeProvider } from "@material-tailwind/react";
 import { ClientProvider } from "./QueryClientProvider";
 
 interface ProvidersProps {
@@ -9,8 +8,6 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
   return (
-    <ThemeProvider>
       <ClientProvider>{children}</ClientProvider>
-    </ThemeProvider>
   );
 }

@@ -3,7 +3,6 @@
 import { useFetchCaptions } from "@/hooks/youTube/youTube";
 import React, { useEffect, useRef } from "react";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
-import { Button, Typography } from "@material-tailwind/react";
 import { Caption as CaptionType } from "@/types/Caption";
 import {
   checkIfPhraseExists,
@@ -17,6 +16,8 @@ import {
   useFetchVideos,
   VideoToCreateType,
 } from "@/hooks/video/video";
+import { Button } from "@/components/ui/button";
+import { TypographyP } from "@/components/ui/typographyP";
 
 function Caption() {
   const videoPlayerStore = useVideoPlayerStore();
@@ -88,7 +89,7 @@ function Caption() {
 
   return (
     <div className="px-12 h-full w-full py-7">
-      {/* <div className="h-full w-full min-h-0 overflow-y-auto">
+      <div className="h-full w-full min-h-0 overflow-y-auto">
         {fetchCaptionsResult.isSuccess
           ? fetchCaptionsResult.data.map((caption) => {
               return (
@@ -98,30 +99,43 @@ function Caption() {
                     caption.index === indexToHighlight ? playingPhraseRef : null
                   }
                 >
-                  <Button
-                    variant="text"
-                    onClick={() =>
-                      handleClickPhraseButton(
-                        userId!,
-                        videoId!,
-                        fetchCaptionsResult.data[caption.index]
-                      )
-                    }
-                    className={`${
-                      caption.index === indexToHighlight
-                        ? "bg-black text-white"
-                        : null
-                    }`}
-                  >
-                    <Typography variant="paragraph" className="text-start">
-                      {caption.text}
-                    </Typography>
-                  </Button>
+                  {caption.index === indexToHighlight ? (
+                    <Button
+                      className="px-2"
+                      onClick={() =>
+                        handleClickPhraseButton(
+                          userId!,
+                          videoId!,
+                          fetchCaptionsResult.data[caption.index]
+                        )
+                      }
+                    >
+                      <TypographyP className="text-start">
+                        {caption.text}
+                      </TypographyP>
+                    </Button>
+                  ) : (
+                    <Button
+                      className="px-2"
+                      variant="ghost"
+                      onClick={() =>
+                        handleClickPhraseButton(
+                          userId!,
+                          videoId!,
+                          fetchCaptionsResult.data[caption.index]
+                        )
+                      }
+                    >
+                      <TypographyP className="text-start">
+                        {caption.text}
+                      </TypographyP>
+                    </Button>
+                  )}
                 </div>
               );
             })
           : null}
-      </div> */}
+      </div>
     </div>
   );
 }

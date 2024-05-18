@@ -1,15 +1,20 @@
 "use client";
 
 import { useSignUpWithGoogle } from "@/hooks/auth/auth";
-import { Button, Card, Tooltip, Typography } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useAnimateKeyframes } from "react-simple-animate";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { TypographyH1 } from "@/components/ui/typographyH1";
+import { TypographyH4 } from "@/components/ui/typographyH4";
+import { TypographyP } from "@/components/ui/typographyP";
+import { TypographySmall } from "@/components/ui/typographySmall";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
 
 export default function LoginPage() {
-  const [isEmailCopied, setIsEmailCopied] = useState(false);
-
   const signUpWithGoogleResult = useSignUpWithGoogle();
 
   const router = useRouter();
@@ -37,28 +42,35 @@ export default function LoginPage() {
     }
   }
 
-  async function handleClickCopyEmail() {
-    navigator.clipboard.writeText("fuyakoshiro@gmail.com");
-    setIsEmailCopied(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    setIsEmailCopied(false);
+  async function handleClickCopyEmail(email: string) {
+    navigator.clipboard.writeText(email);
+    toast("Email copied to clipboard!");
   }
 
-  const githubUrl = "https://github.com/FuyaKoshiro/phrase-bank-ts";
+  const githubUrl = "https://github.com/FuyaKoshiro/phrase-bank";
+  const email = "fuyakoshiro@gmail.com";
+
+  function handleClickGitHubButton(githubUrl: string) {
+    window.open(githubUrl, "_blank");
+  }
 
   return (
-    <div className="flex flex-col px-5 lg:px-28 py-5 lg:py-14">
-      {/* <div className="flex flex-row justify-between items-center">
-        <Typography variant="h5">Phrase Bank</Typography>
+    <div className="w-screen flex flex-col px-5 lg:px-28 pt-5 pb-10 lg:py-14">
+      <div className="flex flex-row justify-between items-center">
+        <TypographyH4>Phrase Bank</TypographyH4>
         <Button
-          variant="outlined"
           onClick={handleClickLoginWithGoogleButton}
-          className="flex flex-row items-center gap-2"
+          className="hidden lg:flex flex-row items-center gap-2 py-7"
         >
           <GoogleIcon />
-          Login With Google
+          <TypographySmall>Sign in with Google</TypographySmall>
+        </Button>
+        <Button
+          onClick={handleClickLoginWithGoogleButton}
+          className="lg:hidden text-sm flex flex-row gap-2"
+        >
+          <GoogleIcon />
+          Sign in with Google
         </Button>
       </div>
 
@@ -66,14 +78,12 @@ export default function LoginPage() {
 
       <div className="flex flex-col lg:flex-row items-center">
         <div className="w-full lg:w-2/5 flex flex-col gap-5">
-          <Typography variant="h1">Save Clips And Come Back Anytime</Typography>
-          <Typography variant="h5" className="">
-            More convinient YouTube Experience
-          </Typography>
-          <Typography variant="paragraph">
+          <TypographyH1>Save Clips And Come Back Anytime</TypographyH1>
+          <TypographyH4>More convinient YouTube Experience</TypographyH4>
+          <TypographyP>
             Save clips from your favorite YouTube videos and come back to them
             anytime you want. Click on the login button to get started!
-          </Typography>
+          </TypographyP>
         </div>
 
         <div className="block lg:hideen h-20" />
@@ -98,7 +108,7 @@ export default function LoginPage() {
           Your browser does not support the video tag.
         </video>
         <div className="w-full flex flex-col gap-2 px-10 py-20 lg:py-0 text-center">
-          <Typography variant="h3">Easy Click to Save Clips</Typography>
+          <TypographyH4>Easy Click to Save Clips</TypographyH4>
         </div>
       </div>
 
@@ -106,52 +116,43 @@ export default function LoginPage() {
 
       <div className="flex flex-row gap-5">
         <Card className="w-1/2 py-5 px-5 flex flex-col justify-center items-start border shadow-none">
-          <Typography variant="h6" className="text-black">
-            Usecase 1
-          </Typography>
-          <Typography variant="paragraph">
+          <TypographyH4 className="text-black">Usecase 1</TypographyH4>
+          <TypographyP>
             Save favirote clips from your favorite YouTube videos and come back.
-          </Typography>
+          </TypographyP>
         </Card>
         <Card className="w-1/2 py-5 px-5 flex flex-col justify-center items-start border shadow-none">
-          <Typography variant="h6" className="text-black">
-            Usecase 2
-          </Typography>
-          <Typography variant="paragraph">
+          <TypographyH4 className="text-black">Usecase 2</TypographyH4>
+          <TypographyP>
             Save English phrases that you want to remember and come back.
-          </Typography>
+          </TypographyP>
         </Card>
       </div>
 
       <div className="h-20" />
 
-      <footer className="flex w-full flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 text-center md:justify-between">
-        <Typography color="blue-gray" className="font-normal">
+      <Separator />
+
+      <footer className="flex w-full flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 py-6 text-center md:justify-between">
+        <TypographySmall className="font-normal">
           &copy; 2024 Fuya Koshiro
-        </Typography>
+        </TypographySmall>
         <ul className="flex flex-wrap items-center gap-y-2 gap-x-8">
           <li>
-            <Typography
-              as="a"
-              href={githubUrl}
-              className="font-normal transition-colors hover:text-gray-300 focus:text-gray-300"
+            <Button
+              variant="link"
+              onClick={() => handleClickGitHubButton(githubUrl)}
             >
               Contribute
-            </Typography>
+            </Button>
           </li>
           <li>
-            <Tooltip content={isEmailCopied ? "Email Copied" : "Copy Email"}>
-              <Typography
-                onClick={handleClickCopyEmail}
-                as="a"
-                className="font-normal transition-colors hover:text-gray-300 focus:text-gray-300 hover:cursor-pointer"
-              >
-                Contact Me!
-              </Typography>
-            </Tooltip>
+            <Button variant="link" onClick={() => handleClickCopyEmail(email)}>
+              Contact me!
+            </Button>
           </li>
         </ul>
-      </footer> */}
+      </footer>
     </div>
   );
 }
