@@ -43,7 +43,6 @@ async function checkIfUserExists(token: string) {
     const response = await axiosRequester(token).get(
       "/user/check_if_user_exists/"
     );
-    console.log("checkIfUserExists response", response.data);
     return response.data;
   } catch (error) {
     throw error;
