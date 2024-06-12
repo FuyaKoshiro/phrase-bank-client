@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { useFetchPhrasesByUserId } from "@/hooks/phrase/phrase";
 import { useFetchVideos } from "@/hooks/video/video";
 import {
   extractVideoIdFromUrl,
@@ -10,7 +9,6 @@ import {
   validateVideoId,
 } from "./utils/sideNavBarHelpers";
 import { useUserStore } from "@/stores/userStore";
-import { useSignOut } from "@/hooks/auth/auth";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +27,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSignOut } from "@/hooks/auth/useAuth";
+import { useFetchPhrasesByUserId } from "@/hooks/phrase/usePhrase";
 
 export default function SideNavBar() {
   const [open, setOpen] = useState<boolean>(false);

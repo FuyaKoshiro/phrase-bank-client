@@ -1,11 +1,11 @@
-import { Phrase } from "../../../../types/Phrase";
-import { Video } from "../../../../types/Video";
+import { Video } from "@/schemas/videoSchema";
 import {
   extractVideoIdFromUrl,
   getSavedVideoTitles,
   transformSecondsToTime,
   validateVideoId,
 } from "./sideNavBarHelpers";
+import { Phrase } from "@/schemas/phraseSchema";
 
 describe("getSavedVideoTitles", () => {
   const mockedSavedVideos: Video[] = [

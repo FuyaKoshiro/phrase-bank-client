@@ -1,15 +1,12 @@
 "use client";
 
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import {
-  useDeletePhrase,
-  useFetchPhrasesByUserId,
-} from "@/hooks/phrase/phrase";
 import React from "react";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { transformSecondsToTime } from "./utils/sideNavBarHelpers";
 import { TypographySmall } from "@/components/ui/typographySmall";
 import { Button } from "@/components/ui/button";
+import { useDeletePhrase, useFetchPhrasesByUserId } from "@/hooks/phrase/usePhrase";
 
 function SavedList() {
   const fetchPhrasesByUserIdResult = useFetchPhrasesByUserId();

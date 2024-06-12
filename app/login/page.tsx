@@ -1,7 +1,5 @@
 "use client";
 
-import { useSignUpWithGoogle } from "@/hooks/auth/auth";
-import { useRouter } from "next/navigation";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useAnimateKeyframes } from "react-simple-animate";
 import { useEffect } from "react";
@@ -13,6 +11,8 @@ import { TypographySmall } from "@/components/ui/typographySmall";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import { useSignUpWithGoogle } from "@/hooks/auth/useAuth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const signUpWithGoogleResult = useSignUpWithGoogle();

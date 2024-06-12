@@ -1,16 +1,12 @@
 "use client";
 
-import {
-  useCheckIfUserExists,
-  useCreateUser,
-  useFetchSelf,
-  UserToCreateType,
-} from "@/hooks/user/user";
+import { useCreateUser, useFetchSelf } from "@/hooks/user/user";
 import { auth } from "@/configs/firebase";
 import { useUserStore } from "@/stores/userStore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { checkIfUserExists, UserToCreateType } from "@/services/userService";
 
 interface FirebaseAuthProviderProps {
   children: React.ReactNode;
@@ -22,7 +18,6 @@ export default function FirebaseAuthProvider({
   const router = useRouter();
   const userStore = useUserStore();
 
-  const checkIfUserExistsResult = useCheckIfUserExists();
   const createUserResult = useCreateUser();
   const fetchSelfResult = useFetchSelf();
 
@@ -34,9 +29,9 @@ export default function FirebaseAuthProvider({
         return;
       }
 
-      const checkIfUserExistsResponse = await checkIfUserExistsResult.refetch();
+      const userExists = await checkIfUserExists();
 
-      if (!checkIfUserExistsResponse.data) {
+      if (!userExists) {
         const userToCreate: UserToCreateType = {
           id: user!.uid,
           email: user!.email!,
