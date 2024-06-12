@@ -1,7 +1,8 @@
 import { axiosRequester } from "../axiosRequester";
 import jsCookie from "js-cookie";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Video } from "@/types/Video";
+import { videoSchema } from "@/schemas/videoSchema";
+import { z } from "zod";
 
 export const videoQueryKeys = {
   videos: ["videos"] as const,
@@ -20,12 +21,12 @@ export function useFetchVideos(ids: string[] | undefined) {
   });
 }
 
-async function fetchVideos(token: string, ids: string[]): Promise<Video[]> {
+async function fetchVideos(token: string, ids: string[]) {
   try {
     const response = await axiosRequester(token).post("/video/fetch_videos/", {
       videoIds: ids,
     });
-    return response.data;
+    return z.array(videoSchema).parse(response.data);
   } catch (error) {
     throw error;
   }
@@ -77,15 +78,12 @@ export type VideoToCreateType = {
   title: string;
 };
 
-async function createVideo(
-  token: string,
-  video: VideoToCreateType
-): Promise<Video> {
+async function createVideo(token: string, video: VideoToCreateType) {
   try {
     const response = await axiosRequester(token).post("/video/", {
       videoData: video,
     });
-    return response.data;
+    return videoSchema.parse(response.data);
   } catch (error) {
     throw error;
   }

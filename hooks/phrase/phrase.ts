@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosRequester } from "../axiosRequester";
 import jsCookie from "js-cookie";
-import { Phrase } from "@/types/Phrase";
+import { phraseSchema } from "@/schemas/phraseSchema";
 
 export const phraseQueryKeys = {
   phrases: ["phrases"] as const,
@@ -18,10 +18,10 @@ export function useFetchPhrasesByUserId() {
   });
 }
 
-async function fetchPhrasesByUserId(token: string): Promise<Phrase[]> {
+async function fetchPhrasesByUserId(token: string) {
   try {
     const response = await axiosRequester(token).get("/phrase/");
-    return response.data;
+    return phraseSchema.parse(response.data);
   } catch (error) {
     throw error;
   }
@@ -34,7 +34,7 @@ export async function checkIfPhraseExists(
   try {
     const token = jsCookie.get("token");
     if (!token) {
-      throw new Error("Token is not found."); 
+      throw new Error("Token is not found.");
     }
     const response = await axiosRequester(token).get(
       `/phrase/check_if_phrase_exists/${videoId}/${start}/`
@@ -66,15 +66,12 @@ export function useCreatePhrase() {
   });
 }
 
-async function createPhrase(
-  token: string,
-  phrase: PhraseToCreateType
-): Promise<Phrase> {
+async function createPhrase(token: string, phrase: PhraseToCreateType) {
   try {
     const response = await axiosRequester(token).post("/phrase/", {
       ...phrase,
     });
-    return response.data as Phrase;
+    return phraseSchema.parse(response.data);
   } catch (error) {
     throw error;
   }

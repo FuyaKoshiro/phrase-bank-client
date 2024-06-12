@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosRequester } from "../axiosRequester";
 import jsCookie from "js-cookie";
-import { Caption } from "@/types/Caption";
-import { VideoDataFromYouTube } from "@/types/VideoDataFromYouTube";
+import { captionSchema } from "@/schemas/captionSchema";
+import { videoDataFromYouTubeSchema } from "@/schemas/videoDataFromYouTube";
 
 export const captionQueryKeys = {
   captions: (videoId: string) => ["captions", videoId] as const,
@@ -24,7 +24,7 @@ async function fetchCaptions(token: string, videoId: string) {
     const resopnse = await axiosRequester(token).get(
       `/youtube/${videoId}/fetch_captions/`
     );
-    return resopnse.data as Caption[];
+    return captionSchema.parse(resopnse.data);
   } catch (error) {
     throw error;
   }
@@ -40,15 +40,12 @@ export function useFetchVideoDataFromYouTube(videoId: string | null) {
   });
 }
 
-async function fetchVideoDataFromYouTube(
-  token: string,
-  videoId: string
-): Promise<VideoDataFromYouTube> {
+async function fetchVideoDataFromYouTube(token: string, videoId: string) {
   try {
     const response = await axiosRequester(token).get(
       `/youtube/${videoId}/fetch_video_data_from_youtube/`
     );
-    return response.data;
+    return videoDataFromYouTubeSchema.parse(response.data);
   } catch (error) {
     throw error;
   }

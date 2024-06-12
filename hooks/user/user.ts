@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosRequester } from "../axiosRequester";
 import jsCookie from "js-cookie";
-import { User } from "@/types/User";
+import { userSchema } from "@/schemas/userSchema";
 
 export const userQueryKeys = {
   self: ["self"] as const,
@@ -21,7 +21,7 @@ export function useFetchSelf() {
 export async function fetchSelf(token: string) {
   try {
     const response = await axiosRequester(token).get("/user/");
-    return response.data as User;
+    return userSchema.parse(response.data);
   } catch (error) {
     throw error;
   }
@@ -74,7 +74,7 @@ async function createUser(token: string, user: UserToCreateType) {
     const response = await axiosRequester(token).post("/user/", {
       ...user,
     });
-    return response.data as User;
+    return userSchema.parse(response.data);
   } catch (error) {
     throw error;
   }
