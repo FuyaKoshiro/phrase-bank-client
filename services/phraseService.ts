@@ -6,7 +6,9 @@ import {
 import jsCookie from "js-cookie";
 import { z } from "zod";
 
-export async function fetchPhrasesByUserId(token: string) {
+export async function fetchPhrasesByUserId() {
+  const token = jsCookie.get("token");
+
   try {
     const response = await axiosRequester(token).get("/phrase/");
     console.log("response.data", response.data);
@@ -42,7 +44,9 @@ export type PhraseToCreateType = {
   end: number;
 };
 
-export async function createPhrase(token: string, phrase: PhraseToCreateType) {
+export async function createPhrase(phrase: PhraseToCreateType) {
+  const token = jsCookie.get("token");
+
   try {
     const response = await axiosRequester(token).post("/phrase/", {
       ...phrase,
@@ -53,10 +57,9 @@ export async function createPhrase(token: string, phrase: PhraseToCreateType) {
   }
 }
 
-export async function deletePhrase(
-  token: string,
-  phraseId: string
-): Promise<void> {
+export async function deletePhrase(phraseId: string): Promise<void> {
+  const token = jsCookie.get("token");
+
   try {
     await axiosRequester(token).delete(`/phrase/${phraseId}/`);
   } catch (error) {

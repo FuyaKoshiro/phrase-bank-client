@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import jsCookie from "js-cookie";
 import {
-  checkIfUserExists,
   createUser,
   fetchSelf,
   UserToCreateType,
@@ -13,24 +12,16 @@ export const userQueryKeys = {
 };
 
 export function useFetchSelf() {
-  const token = jsCookie.get("token");
-
   return useQuery({
     queryKey: userQueryKeys.self,
-    queryFn: () => fetchSelf(token!),
-    enabled: !!token,
+    queryFn: fetchSelf,
   });
 }
 
 export function useCreateUser() {
-  const token = jsCookie.get("token");
-
   return useMutation({
     mutationFn: (user: UserToCreateType) => {
-      if (!token) {
-        throw new Error("Token is not found.");
-      }
-      return createUser(token, user);
+      return createUser(user);
     },
   });
 }

@@ -3,7 +3,9 @@ import { checkIfVideoExistsSchema, videoSchema } from "@/schemas/videoSchema";
 import { z } from "zod";
 import jsCookie from "js-cookie";
 
-export async function fetchVideos(token: string, ids: string[]) {
+export async function fetchVideos(ids: string[]) {
+  const token = jsCookie.get("token");
+
   try {
     const response = await axiosRequester(token).post("/video/fetch_videos/", {
       videoIds: ids,
@@ -14,9 +16,7 @@ export async function fetchVideos(token: string, ids: string[]) {
   }
 }
 
-export async function checkIfVideoExists(
-  videoId: string
-): Promise<boolean> {
+export async function checkIfVideoExists(videoId: string): Promise<boolean> {
   try {
     const token = jsCookie.get("token");
 
@@ -34,7 +34,9 @@ export type VideoToCreateType = {
   title: string;
 };
 
-export async function createVideo(token: string, video: VideoToCreateType) {
+export async function createVideo(video: VideoToCreateType) {
+  const token = jsCookie.get("token");
+  
   try {
     const response = await axiosRequester(token).post("/video/", {
       videoData: video,

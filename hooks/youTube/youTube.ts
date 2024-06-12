@@ -11,21 +11,17 @@ export const captionQueryKeys = {
 };
 
 export function useFetchCaptions(videoId: string | null) {
-  const token = jsCookie.get("token");
-
   return useQuery({
     queryKey: captionQueryKeys.captions(videoId!),
-    queryFn: () => fetchCaptions(token!, videoId!),
-    enabled: !!token && !!videoId,
+    queryFn: () => fetchCaptions(videoId!),
+    enabled: !!videoId,
   });
 }
 
 export function useFetchVideoDataFromYouTube(videoId: string | null) {
-  const token = jsCookie.get("token");
-
   return useQuery({
     queryKey: captionQueryKeys.videoData(videoId!),
-    queryFn: async () => fetchVideoDataFromYouTube(token!, videoId!),
-    enabled: !!token && !!videoId,
+    queryFn: async () => fetchVideoDataFromYouTube(videoId!),
+    enabled: !!videoId,
   });
 }

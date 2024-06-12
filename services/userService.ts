@@ -2,7 +2,9 @@ import { axiosRequester } from "@/hooks/axiosRequester";
 import { checkIfUserExistsSchema, userSchema } from "@/schemas/userSchema";
 import jsCookie from "js-cookie";
 
-export async function fetchSelf(token: string) {
+export async function fetchSelf() {
+  const token = jsCookie.get("token");
+
   try {
     const response = await axiosRequester(token).get("/user/");
     return userSchema.parse(response.data);
@@ -31,7 +33,9 @@ export type UserToCreateType = {
   avatar?: string;
 };
 
-export async function createUser(token: string, user: UserToCreateType) {
+export async function createUser(user: UserToCreateType) {
+  const token = jsCookie.get("token");
+
   try {
     const response = await axiosRequester(token).post("/user/", {
       ...user,

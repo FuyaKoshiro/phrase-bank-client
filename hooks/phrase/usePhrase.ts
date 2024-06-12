@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import jsCookie from "js-cookie";
 import {
   createPhrase,
   deletePhrase,
@@ -13,37 +12,24 @@ export const phraseQueryKeys = {
 };
 
 export function useFetchPhrasesByUserId() {
-  const token = jsCookie.get("token");
-
   return useQuery({
     queryKey: phraseQueryKeys.phrases,
-    queryFn: () => fetchPhrasesByUserId(token!),
-    enabled: !!token,
+    queryFn: fetchPhrasesByUserId,
   });
 }
 
 export function useCreatePhrase() {
-  const token = jsCookie.get("token");
-
   return useMutation({
     mutationFn: (phrase: PhraseToCreateType) => {
-      if (!token) {
-        throw new Error("Token is not found.");
-      }
-      return createPhrase(token, phrase);
+      return createPhrase(phrase);
     },
   });
 }
 
 export function useDeletePhrase() {
-  const token = jsCookie.get("token");
-
   return useMutation({
     mutationFn: (phraseId: string) => {
-      if (!token) {
-        throw new Error("Token is not found.");
-      }
-      return deletePhrase(token, phraseId);
+      return deletePhrase(phraseId);
     },
   });
 }
