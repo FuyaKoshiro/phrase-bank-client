@@ -30,7 +30,6 @@ export default function FirebaseAuthProvider({
       }
 
       const userExists = await checkIfUserExists();
-      console.log("userExists", userExists);
 
       if (!userExists) {
         const userToCreate: UserToCreateType = {
