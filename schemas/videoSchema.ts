@@ -5,3 +5,6 @@ export const videoSchema = z.object({
   title: z.string(),
 });
 export type Video = z.infer<typeof videoSchema>;
+
+export const checkIfVideoExistsSchema = z.boolean();
+export type CheckIfVideoExists = z.infer<typeof checkIfVideoExistsSchema>;

@@ -1,7 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { axiosRequester } from "../axiosRequester";
 import jsCookie from "js-cookie";
-import { userSchema } from "@/schemas/userSchema";
+import {
+  checkIfUserExists,
+  createUser,
+  fetchSelf,
+  UserToCreateType,
+} from "@/services/userService";
 
 export const userQueryKeys = {
   self: ["self"] as const,
@@ -18,15 +22,6 @@ export function useFetchSelf() {
   });
 }
 
-export async function fetchSelf(token: string) {
-  try {
-    const response = await axiosRequester(token).get("/user/");
-    return userSchema.parse(response.data);
-  } catch (error) {
-    throw error;
-  }
-}
-
 export function useCheckIfUserExists() {
   const token = jsCookie.get("token");
 
@@ -36,24 +31,6 @@ export function useCheckIfUserExists() {
     enabled: !!token,
     staleTime: 0,
   });
-}
-
-async function checkIfUserExists(token: string) {
-  try {
-    const response = await axiosRequester(token).get(
-      "/user/check_if_user_exists/"
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export interface UserToCreateType {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
 }
 
 export function useCreateUser() {
@@ -67,15 +44,4 @@ export function useCreateUser() {
       return createUser(token, user);
     },
   });
-}
-
-async function createUser(token: string, user: UserToCreateType) {
-  try {
-    const response = await axiosRequester(token).post("/user/", {
-      ...user,
-    });
-    return userSchema.parse(response.data);
-  } catch (error) {
-    throw error;
-  }
 }

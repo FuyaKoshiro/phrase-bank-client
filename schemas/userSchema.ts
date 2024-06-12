@@ -8,3 +8,6 @@ export const userSchema = z.object({
   createdAt: z.date().nullable(),
 });
 export type User = z.infer<typeof userSchema>;
+
+export const checkIfUserExistsSchema = z.boolean();
+export type CheckIfUserExists = z.infer<typeof checkIfUserExistsSchema>;

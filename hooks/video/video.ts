@@ -1,8 +1,6 @@
-import { axiosRequester } from "../axiosRequester";
 import jsCookie from "js-cookie";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { videoSchema } from "@/schemas/videoSchema";
-import { z } from "zod";
+import { checkIfVideoExists, createVideo, fetchVideos, VideoToCreateType } from "@/services/videoService";
 
 export const videoQueryKeys = {
   videos: ["videos"] as const,
@@ -21,17 +19,6 @@ export function useFetchVideos(ids: string[] | undefined) {
   });
 }
 
-async function fetchVideos(token: string, ids: string[]) {
-  try {
-    const response = await axiosRequester(token).post("/video/fetch_videos/", {
-      videoIds: ids,
-    });
-    return z.array(videoSchema).parse(response.data);
-  } catch (error) {
-    throw error;
-  }
-}
-
 export function useCheckIfVideoExists(videoId: string | null) {
   const token = jsCookie.get("token");
 
@@ -40,20 +27,6 @@ export function useCheckIfVideoExists(videoId: string | null) {
     queryFn: () => checkIfVideoExists(token!, videoId!),
     enabled: !!token && !!videoId,
   });
-}
-
-async function checkIfVideoExists(
-  token: string,
-  videoId: string
-): Promise<boolean> {
-  try {
-    const response = await axiosRequester(token).get(
-      `/video/check_if_video_exists/${videoId}/`
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
 }
 
 export function useCreateVideo() {
@@ -73,18 +46,3 @@ export function useCreateVideo() {
   });
 }
 
-export type VideoToCreateType = {
-  id: string;
-  title: string;
-};
-
-async function createVideo(token: string, video: VideoToCreateType) {
-  try {
-    const response = await axiosRequester(token).post("/video/", {
-      videoData: video,
-    });
-    return videoSchema.parse(response.data);
-  } catch (error) {
-    throw error;
-  }
-}

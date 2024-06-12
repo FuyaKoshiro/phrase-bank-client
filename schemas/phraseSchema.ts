@@ -12,3 +12,6 @@ export const phraseSchema = z.object({
   updatedAt: z.date(),
 });
 export type Phrase = z.infer<typeof phraseSchema>;
+
+export const checkIfPhraseExistsSchema = z.boolean();
+export type CheckIfPhraseExists = z.infer<typeof checkIfPhraseExistsSchema>;
