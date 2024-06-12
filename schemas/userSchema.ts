@@ -5,7 +5,18 @@ export const userSchema = z.object({
   email: z.string(),
   name: z.string(),
   avatar: z.string(),
-  createdAt: z.date().nullable(),
+  createdAt: z
+    .string()
+    .transform((val) => new Date(val))
+    .optional(),
+  lastLoginAt: z
+    .string()
+    .transform((val) => new Date(val))
+    .optional(),
+  updatedAt: z
+    .string()
+    .transform((val) => new Date(val))
+    .optional(),
 });
 export type User = z.infer<typeof userSchema>;
 

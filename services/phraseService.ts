@@ -9,6 +9,7 @@ import { z } from "zod";
 export async function fetchPhrasesByUserId(token: string) {
   try {
     const response = await axiosRequester(token).get("/phrase/");
+    console.log("response.data", response.data);
     return z.array(phraseSchema).parse(response.data);
   } catch (error) {
     throw error;

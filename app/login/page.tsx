@@ -12,7 +12,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { useSignUpWithGoogle } from "@/hooks/auth/useAuth";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const signUpWithGoogleResult = useSignUpWithGoogle();

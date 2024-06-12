@@ -1,5 +1,6 @@
 import { axiosRequester } from "@/hooks/axiosRequester";
 import { checkIfUserExistsSchema, userSchema } from "@/schemas/userSchema";
+import jsCookie from "js-cookie";
 
 export async function fetchSelf(token: string) {
   try {
@@ -10,7 +11,9 @@ export async function fetchSelf(token: string) {
   }
 }
 
-export async function checkIfUserExists(token: string) {
+export async function checkIfUserExists() {
+  const token = jsCookie.get("token");
+
   try {
     const response = await axiosRequester(token).get(
       "/user/check_if_user_exists/"

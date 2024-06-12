@@ -22,17 +22,6 @@ export function useFetchSelf() {
   });
 }
 
-export function useCheckIfUserExists() {
-  const token = jsCookie.get("token");
-
-  return useQuery({
-    queryKey: userQueryKeys.selfCheck,
-    queryFn: () => checkIfUserExists(token!),
-    enabled: !!token,
-    staleTime: 0,
-  });
-}
-
 export function useCreateUser() {
   const token = jsCookie.get("token");
 

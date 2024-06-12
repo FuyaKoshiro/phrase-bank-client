@@ -7,9 +7,12 @@ export const phraseSchema = z.object({
   text: z.string(),
   start: z.number(),
   end: z.number(),
-  archivedAt: z.date().nullable(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  archivedAt: z
+    .string()
+    .transform((val) => new Date(val))
+    .nullable(),
+  createdAt: z.string().transform((val) => new Date(val)),
+  updatedAt: z.string().transform((val) => new Date(val)),
 });
 export type Phrase = z.infer<typeof phraseSchema>;
 
