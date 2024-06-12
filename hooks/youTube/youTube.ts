@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import jsCookie from "js-cookie";
 import {
   fetchCaptions,
   fetchVideoDataFromYouTube,
