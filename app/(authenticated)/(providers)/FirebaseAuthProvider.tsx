@@ -4,13 +4,13 @@ import {
   useCheckIfUserExists,
   useCreateUser,
   useFetchSelf,
-  UserToCreateType,
 } from "@/hooks/user/user";
 import { auth } from "@/configs/firebase";
 import { useUserStore } from "@/stores/userStore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { UserToCreateType } from "@/services/userService";
 
 interface FirebaseAuthProviderProps {
   children: React.ReactNode;
