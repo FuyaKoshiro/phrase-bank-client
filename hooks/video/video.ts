@@ -19,16 +19,6 @@ export function useFetchVideos(ids: string[] | undefined) {
   });
 }
 
-export function useCheckIfVideoExists(videoId: string | null) {
-  const token = jsCookie.get("token");
-
-  return useQuery({
-    queryKey: videoQueryKeys.selfCheck,
-    queryFn: () => checkIfVideoExists(token!, videoId!),
-    enabled: !!token && !!videoId,
-  });
-}
-
 export function useCreateVideo() {
   const token = jsCookie.get("token");
   const queryClient = useQueryClient();

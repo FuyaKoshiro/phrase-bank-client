@@ -1,6 +1,7 @@
 import { axiosRequester } from "@/hooks/axiosRequester";
 import { checkIfVideoExistsSchema, videoSchema } from "@/schemas/videoSchema";
 import { z } from "zod";
+import jsCookie from "js-cookie";
 
 export async function fetchVideos(token: string, ids: string[]) {
   try {
@@ -14,10 +15,11 @@ export async function fetchVideos(token: string, ids: string[]) {
 }
 
 export async function checkIfVideoExists(
-  token: string,
   videoId: string
 ): Promise<boolean> {
   try {
+    const token = jsCookie.get("token");
+
     const response = await axiosRequester(token).get(
       `/video/check_if_video_exists/${videoId}/`
     );

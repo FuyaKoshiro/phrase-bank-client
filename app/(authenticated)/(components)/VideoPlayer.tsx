@@ -24,7 +24,7 @@ export default function VideoPlayer() {
         fetchVideoDataFromYouTubeResult.data.title
       );
     }
-  }, [fetchVideoDataFromYouTubeResult.data]);
+  }, [fetchVideoDataFromYouTubeResult.data, videoPlayerStore]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

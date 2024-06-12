@@ -3,21 +3,17 @@
 import { useFetchCaptions } from "@/hooks/youTube/youTube";
 import React, { useEffect, useRef } from "react";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
-import { Caption as CaptionType } from "@/types/Caption";
-import {
-  checkIfPhraseExists,
-  useCreatePhrase,
-  useFetchPhrasesByUserId,
-} from "@/hooks/phrase/phrase";
 import { useUserStore } from "@/stores/userStore";
-import {
-  useCheckIfVideoExists,
-  useCreateVideo,
-  useFetchVideos,
-  VideoToCreateType,
-} from "@/hooks/video/video";
+import { useCreateVideo, useFetchVideos } from "@/hooks/video/video";
 import { Button } from "@/components/ui/button";
 import { TypographyP } from "@/components/ui/typographyP";
+import {
+  useCreatePhrase,
+  useFetchPhrasesByUserId,
+} from "@/hooks/phrase/usePhrase";
+import { checkIfVideoExists, VideoToCreateType } from "@/services/videoService";
+import { Caption as CaptionType } from "@/schemas/captionSchema";
+import { checkIfPhraseExists } from "@/services/phraseService";
 
 function Caption() {
   const videoPlayerStore = useVideoPlayerStore();
@@ -28,7 +24,6 @@ function Caption() {
 
   const fetchCaptionsResult = useFetchCaptions(videoId);
   const fetchPhrasesByUserIdResult = useFetchPhrasesByUserId();
-  const checkIfVideoExistsResult = useCheckIfVideoExists(videoId);
   const createVideoResult = useCreateVideo();
   const createPhraseResult = useCreatePhrase();
 
@@ -69,9 +64,9 @@ function Caption() {
       end: caption.end as number,
     };
 
-    const videoExistsResponse = await checkIfVideoExistsResult.refetch();
+    const videoExists = await checkIfVideoExists(videoId);
 
-    if (!videoExistsResponse.data) {
+    if (!videoExists) {
       await createVideoResult.mutateAsync({
         id: videoId,
         title: videoPlayerStore.videoTitle,

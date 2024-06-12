@@ -4,11 +4,12 @@ import {
   phraseSchema,
 } from "@/schemas/phraseSchema";
 import jsCookie from "js-cookie";
+import { z } from "zod";
 
 export async function fetchPhrasesByUserId(token: string) {
   try {
     const response = await axiosRequester(token).get("/phrase/");
-    return phraseSchema.parse(response.data);
+    return z.array(phraseSchema).parse(response.data);
   } catch (error) {
     throw error;
   }

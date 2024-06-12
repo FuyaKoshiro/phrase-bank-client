@@ -1,6 +1,6 @@
 import { SavedVideoWithDate } from "@/app/(authenticated)/(types)/SavedVideoWithDate";
-import { Phrase } from "../../../../types/Phrase";
-import { Video } from "../../../../types/Video";
+import { Phrase } from "@/schemas/phraseSchema";
+import { Video } from "@/schemas/videoSchema";
 import { z } from "zod";
 
 export function getSavedVideoTitles(
