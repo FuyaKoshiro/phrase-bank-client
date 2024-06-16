@@ -1,4 +1,4 @@
-import { axiosRequester } from "@/hooks/axiosRequester";
+import { axiosRequester } from "@/queries/axiosRequester";
 import { checkIfVideoExistsSchema, videoSchema } from "@/schemas/videoSchema";
 import { z } from "zod";
 import jsCookie from "js-cookie";

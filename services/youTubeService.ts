@@ -1,4 +1,4 @@
-import { axiosRequester } from "@/hooks/axiosRequester";
+import { axiosRequester } from "@/queries/axiosRequester";
 import { captionSchema } from "@/schemas/captionSchema";
 import { videoDataFromYouTubeSchema } from "@/schemas/videoDataFromYouTube";
 import { z } from "zod";

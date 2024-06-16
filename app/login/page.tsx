@@ -11,7 +11,7 @@ import { TypographySmall } from "@/components/ui/typographySmall";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { useSignUpWithGoogle } from "@/hooks/auth/useAuth";
+import { useSignUpWithGoogle } from "@/queries/auth/useAuth";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {

@@ -1,4 +1,4 @@
-import { User } from "@/types/User";
+import { User } from "@/schemas/userSchema";
 import { create } from "zustand";
 
 type State = {
