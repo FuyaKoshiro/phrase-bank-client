@@ -6,7 +6,7 @@ import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { transformSecondsToTime } from "./utils/sideNavBarHelpers";
 import { TypographySmall } from "@/components/ui/typographySmall";
 import { Button } from "@/components/ui/button";
-import { useDeletePhrase, useFetchPhrasesByUserId } from "@/hooks/phrase/usePhrase";
+import { useDeletePhrase, useFetchPhrasesByUserId } from "@/queries/phrase/usePhrase";
 
 function SavedList() {
   const fetchPhrasesByUserIdResult = useFetchPhrasesByUserId();

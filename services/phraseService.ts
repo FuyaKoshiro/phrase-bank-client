@@ -1,4 +1,4 @@
-import { axiosRequester } from "@/hooks/axiosRequester";
+import { axiosRequester } from "@/queries/axiosRequester";
 import {
   checkIfPhraseExistsSchema,
   phraseSchema,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCreateUser, useFetchSelf } from "@/hooks/user/user";
+import { useCreateUser, useFetchSelf } from "@/queries/user/user";
 import { auth } from "@/configs/firebase";
 import { useUserStore } from "@/stores/userStore";
 import { onAuthStateChanged } from "firebase/auth";

@@ -1,16 +1,16 @@
 "use client";
 
-import { useFetchCaptions } from "@/hooks/youTube/youTube";
+import { useFetchCaptions } from "@/queries/youTube/youTube";
 import React, { useEffect, useRef } from "react";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { useUserStore } from "@/stores/userStore";
-import { useCreateVideo, useFetchVideos } from "@/hooks/video/video";
+import { useCreateVideo, useFetchVideos } from "@/queries/video/video";
 import { Button } from "@/components/ui/button";
 import { TypographyP } from "@/components/ui/typographyP";
 import {
   useCreatePhrase,
   useFetchPhrasesByUserId,
-} from "@/hooks/phrase/usePhrase";
+} from "@/queries/phrase/usePhrase";
 import { checkIfVideoExists, VideoToCreateType } from "@/services/videoService";
 import { Caption as CaptionType } from "@/schemas/captionSchema";
 import { checkIfPhraseExists } from "@/services/phraseService";

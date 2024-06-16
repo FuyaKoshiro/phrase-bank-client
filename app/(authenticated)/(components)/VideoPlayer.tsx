@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { OnProgressProps } from "react-player/base";
-import { useFetchVideoDataFromYouTube } from "@/hooks/youTube/youTube";
+import { useFetchVideoDataFromYouTube } from "@/queries/youTube/youTube";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 
 export default function VideoPlayer() {

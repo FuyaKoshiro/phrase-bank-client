@@ -1,5 +1,5 @@
 import { auth } from "@/configs/firebase";
-import { setCookie } from "@/hooks/auth/utils/helpers";
+import { setCookie } from "@/queries/auth/utils/helpers";
 import {
   getAdditionalUserInfo,
   GoogleAuthProvider,
