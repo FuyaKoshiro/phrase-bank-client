@@ -6,7 +6,11 @@ import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { transformSecondsToTime } from "./utils/sideNavBarHelpers";
 import { TypographySmall } from "@/components/ui/typographySmall";
 import { Button } from "@/components/ui/button";
-import { useDeletePhrase, useFetchPhrasesByUserId } from "@/queries/phrase/usePhrase";
+import {
+  useDeletePhrase,
+  useFetchPhrasesByUserId,
+} from "@/queries/phrase/usePhrase";
+import { Loading } from "@lemonsqueezy/wedges";
 
 function SavedList() {
   const fetchPhrasesByUserIdResult = useFetchPhrasesByUserId();
@@ -71,6 +75,12 @@ function SavedList() {
     return (
       <div className="h-full w-full flex flex-row justify-center items-center">
         <TypographySmall>Select Video</TypographySmall>
+      </div>
+    );
+  } else if (fetchPhrasesByUserIdResult.isLoading) {
+    return (
+      <div className="h-full w-full flex flex-row justify-center items-center">
+        <Loading type="dots" size="xs" />
       </div>
     );
   } else {
