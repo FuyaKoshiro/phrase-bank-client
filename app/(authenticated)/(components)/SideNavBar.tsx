@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSignOut } from "@/queries/auth/useAuth";
 import { useFetchPhrasesByUserId } from "@/queries/phrase/usePhrase";
+import { Skeleton } from "@mui/material";
+import { Loading } from "@lemonsqueezy/wedges";
 
 export default function SideNavBar() {
   const [open, setOpen] = useState<boolean>(false);
@@ -116,28 +118,41 @@ export default function SideNavBar() {
           </DialogContent>
         </Dialog>
 
-        {savedVideosWithDate
-          ? savedVideosWithDate.map((savedVideo) => (
-              <Button
-                key={savedVideo.videoId}
-                variant="ghost"
-                className="py-2 w-full"
-                onClick={() => handleClickVideoCardButton(savedVideo.videoId)}
-              >
-                <p className="line-clamp-1 text-start text-sm w-full">
-                  {savedVideo.title}
-                </p>
-              </Button>
-            ))
-          : null}
+        {savedVideosWithDate ? (
+          savedVideosWithDate.map((savedVideo) => (
+            <Button
+              key={savedVideo.videoId}
+              variant="ghost"
+              className="py-2 w-full"
+              onClick={() => handleClickVideoCardButton(savedVideo.videoId)}
+            >
+              <p className="line-clamp-1 text-start text-sm w-full">
+                {savedVideo.title}
+              </p>
+            </Button>
+          ))
+        ) : (
+          <div className="h-full w-full flex flex-col justify-center items-center">
+            <Loading type="dots" size="xs" />
+          </div>
+        )}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger className="flex flex-row items-center gap-5 w-full py-2 px-4 hover:bg-accent hover:text-accent-foreground">
-          <Avatar className="h-5 w-5 bg-accent flex flex-row items-center justify-center">
-            <AvatarImage src={userStore.user?.avatar} alt="User Avatar" />
-            <AvatarFallback>G</AvatarFallback>
-          </Avatar>
-          <p className="text-start">{userStore.user?.name}</p>
+          {userStore.user ? (
+            <>
+              <Avatar className="h-5 w-5 bg-accent flex flex-row items-center justify-center">
+                <AvatarImage src={userStore.user?.avatar} alt="User Avatar" />
+                <AvatarFallback>G</AvatarFallback>
+              </Avatar>
+              <p className="text-start">{userStore.user?.name}</p>
+            </>
+          ) : (
+            <>
+              <Skeleton variant="circular" className="h-5 w-5" />
+              <Skeleton variant="text" className="w-full" />
+            </>
+          )}
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>
