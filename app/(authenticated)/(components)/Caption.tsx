@@ -14,6 +14,7 @@ import {
 import { checkIfVideoExists, VideoToCreateType } from "@/services/videoService";
 import { Caption as CaptionType } from "@/schemas/captionSchema";
 import { checkIfPhraseExists } from "@/services/phraseService";
+import { Loading } from "@lemonsqueezy/wedges";
 
 function Caption() {
   const videoPlayerStore = useVideoPlayerStore();
@@ -82,10 +83,22 @@ function Caption() {
     }
   }
 
+  if (!userId || !videoId) {
+    return <></>;
+  }
+
+  if (fetchCaptionsResult.isLoading) {
+    return (
+      <div className="h-full w-full flex flex-col justify-center items-center">
+        <Loading type="dots" size="xs" />
+      </div>
+    );
+  }
+
   return (
     <div className="px-12 h-full w-full py-7">
       <div className="h-full w-full min-h-0 overflow-y-auto">
-        {fetchCaptionsResult.isSuccess
+        {fetchCaptionsResult.data
           ? fetchCaptionsResult.data.map((caption) => {
               return (
                 <div
@@ -99,8 +112,8 @@ function Caption() {
                       className="px-2"
                       onClick={() =>
                         handleClickPhraseButton(
-                          userId!,
-                          videoId!,
+                          userId,
+                          videoId,
                           fetchCaptionsResult.data[caption.index]
                         )
                       }
@@ -115,8 +128,8 @@ function Caption() {
                       variant="ghost"
                       onClick={() =>
                         handleClickPhraseButton(
-                          userId!,
-                          videoId!,
+                          userId,
+                          videoId,
                           fetchCaptionsResult.data[caption.index]
                         )
                       }
