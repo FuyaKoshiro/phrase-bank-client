@@ -3,7 +3,6 @@ import {
   extractVideoIdFromUrl,
   getSavedVideoTitles,
   transformSecondsToTime,
-  validateVideoId,
 } from "./sideNavBarHelpers";
 import { Phrase } from "@/schemas/phraseSchema";
 
@@ -83,18 +82,10 @@ describe("extractVideoIdFromUrl", () => {
     const url = "https://www.youtube.com/watch?v=";
     expect(() => extractVideoIdFromUrl(url)).toThrow();
   });
-});
 
-describe("validateVideoId", () => {
-  it("given a valid videoId, it should return the videoId", () => {
-    const videoId = "qbDi-v2NZgo";
-    const result = validateVideoId(videoId);
-    expect(result).toEqual(videoId);
-  });
-
-  it("given an invalid videoId, it should throw an error", () => {
-    const videoId = "in valid";
-    expect(() => validateVideoId(videoId)).toThrow();
+  it("given a non-youtube video url, it should throw an error", () => {
+    const url = "https://www.google.com";
+    expect(() => extractVideoIdFromUrl(url)).toThrow();
   });
 });
 
@@ -105,4 +96,3 @@ describe("transformSecondsToTime", () => {
     expect(result).toEqual("01:01:01");
   });
 });
-

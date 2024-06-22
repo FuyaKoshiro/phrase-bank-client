@@ -38,6 +38,10 @@ export function getSavedVideoTitles(
 }
 
 export function extractVideoIdFromUrl(url: string) {
+  if (!url.startsWith("https://www.youtube.com/")) {
+    throw new Error("URL must start with 'https://www.youtube.com/'");
+  }
+
   const regExp =
     /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
@@ -49,15 +53,7 @@ export function extractVideoIdFromUrl(url: string) {
   }
 }
 
-const VideoId = z.string().regex(/^\S+$/);
-
-export function validateVideoId(videoId: any) {
-  try {
-    return VideoId.parse(videoId);
-  } catch (error) {
-    throw error;
-  }
-}
+export const videoIdSchema = z.string().regex(/^\S+$/);
 
 export function transformSecondsToTime(seconds: number) {
   const hours = Math.floor(seconds / 3600);

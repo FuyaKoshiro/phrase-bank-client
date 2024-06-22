@@ -6,7 +6,7 @@ import { useFetchVideos } from "@/queries/video/video";
 import {
   extractVideoIdFromUrl,
   getSavedVideoTitles,
-  validateVideoId,
+  videoIdSchema,
 } from "./utils/sideNavBarHelpers";
 import { useUserStore } from "@/stores/userStore";
 import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
@@ -20,7 +20,7 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Input } from "@/components/ui/input";
-import { DialogTrigger } from "@radix-ui/react-dialog";
+import { DialogClose, DialogTrigger } from "@radix-ui/react-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,10 +31,13 @@ import { useSignOut } from "@/queries/auth/useAuth";
 import { useFetchPhrasesByUserId } from "@/queries/phrase/usePhrase";
 import { Skeleton } from "@mui/material";
 import { Loading } from "@lemonsqueezy/wedges";
+import { TypographySmall } from "@/components/ui/typographySmall";
 
 export default function SideNavBar() {
   const [open, setOpen] = useState<boolean>(false);
-  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [videoId, setVideoId] = useState<string>("");
+  const [videoIdValidationError, setVideoIdValidationError] =
+    useState<string>("");
 
   const userStore = useUserStore();
   const videoPlayerStore = useVideoPlayerStore();
@@ -57,10 +60,6 @@ export default function SideNavBar() {
         )
       : null;
 
-  function handleClickAddVideoButton() {
-    handleOpen();
-  }
-
   async function handleClickVideoCardButton(videoId: string) {
     videoPlayerStore.setVideoId(videoId);
   }
@@ -69,20 +68,24 @@ export default function SideNavBar() {
     await signOutResult.mutateAsync();
   }
 
-  function handleOpen() {
-    setOpen(!open);
-  }
-
   function handleVideoUrlInputChange(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    setVideoUrl(event.target.value);
+    try {
+      const videoId = extractVideoIdFromUrl(event.target.value);
+      const parsedVideoId = videoIdSchema.parse(videoId);
+      setVideoIdValidationError("");
+      setVideoId(parsedVideoId);
+    } catch (_) {
+      setVideoIdValidationError("Invalid video URL");
+    }
   }
 
-  async function handleClickSubmitButton(videoUrl: string) {
-    const videoId = extractVideoIdFromUrl(videoUrl);
-    const validatedVideoId = validateVideoId(videoId);
-    videoPlayerStore.setVideoId(validatedVideoId);
+  async function handleClickSubmitButton(videoId: string) {
+    if (videoIdValidationError) {
+      return;
+    }
+    videoPlayerStore.setVideoId(videoId);
   }
 
   return (
@@ -107,13 +110,18 @@ export default function SideNavBar() {
               placeholder="YouTube Video URL"
               onChange={handleVideoUrlInputChange}
             />
-            <DialogFooter>
-              <Button
-                color="black"
-                onClick={() => handleClickSubmitButton(videoUrl)}
-              >
-                <span>Submit</span>
-              </Button>
+            <DialogFooter className="flex items-center gap-2">
+              <TypographySmall className="text-destructive">
+                {videoIdValidationError}
+              </TypographySmall>
+              <DialogClose>
+                <Button
+                  color="black"
+                  onClick={() => handleClickSubmitButton(videoId)}
+                >
+                  <span>Submit</span>
+                </Button>
+              </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>
