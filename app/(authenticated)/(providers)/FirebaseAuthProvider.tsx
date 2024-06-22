@@ -32,23 +32,32 @@ export default function FirebaseAuthProvider({
       const userExists = await checkIfUserExists();
 
       if (!userExists) {
+        if (!user.email || !user.displayName || !user.photoURL) {
+          throw new Error("User does not have enough information");
+        }
+
         const userToCreate: UserToCreateType = {
-          id: user!.uid,
-          email: user!.email!,
-          name: user!.displayName!,
-          avatar: user!.photoURL!,
+          id: user.uid,
+          email: user.email,
+          name: user.displayName,
+          avatar: user.photoURL,
         };
 
         const createdUser = await createUserResult.mutateAsync(userToCreate);
         userStore.setUser(createdUser);
       } else {
         const userFromDbResponse = await fetchSelfResult.refetch();
-        userStore.setUser(userFromDbResponse.data!);
+
+        if (!userFromDbResponse.data) {
+          throw new Error("User not found in database");
+        }
+
+        userStore.setUser(userFromDbResponse.data);
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [createUserResult, fetchSelfResult, router, userStore]);
 
   return <>{children}</>;
 }
