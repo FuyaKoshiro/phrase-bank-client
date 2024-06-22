@@ -29,6 +29,10 @@ export default function FirebaseAuthProvider({
         return;
       }
 
+      if (userStore.user) {
+        return;
+      }
+
       const userExists = await checkIfUserExists();
 
       if (!userExists) {
