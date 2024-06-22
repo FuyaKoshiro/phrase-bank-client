@@ -13,6 +13,8 @@ import {
 import { Loading } from "@lemonsqueezy/wedges";
 
 function SavedList() {
+  const [deletedPhraseId, setDeletedPhraseId] = React.useState<string>("");
+
   const fetchPhrasesByUserIdResult = useFetchPhrasesByUserId();
   const deletePhraseResult = useDeletePhrase();
 
@@ -36,7 +38,9 @@ function SavedList() {
   }
 
   async function handleClickDeletePhraseButton(phraseId: string) {
+    setDeletedPhraseId(phraseId);
     await deletePhraseResult.mutateAsync(phraseId);
+    setDeletedPhraseId("");
     fetchPhrasesByUserIdResult.refetch();
   }
 
@@ -53,8 +57,15 @@ function SavedList() {
               size="icon"
               onClick={() => handleClickDeletePhraseButton(phrase.id)}
               className="flex-none"
+              disabled={
+                deletePhraseResult.isLoading && deletedPhraseId === phrase.id
+              }
             >
-              <DeleteOutlineIcon />
+              {deletePhraseResult.isLoading && deletedPhraseId === phrase.id ? (
+                <Loading type="dots" size="xxs" />
+              ) : (
+                <DeleteOutlineIcon />
+              )}
             </Button>
 
             <Button
