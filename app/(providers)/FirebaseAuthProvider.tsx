@@ -5,7 +5,7 @@ import { auth } from "@/configs/firebase";
 import { useUserStore } from "@/stores/userStore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { checkIfUserExists, UserToCreateType } from "@/services/userService";
 
 interface FirebaseAuthProviderProps {
@@ -15,21 +15,22 @@ interface FirebaseAuthProviderProps {
 export default function FirebaseAuthProvider({
   children,
 }: FirebaseAuthProviderProps) {
-  const router = useRouter();
-  const userStore = useUserStore();
+  const routerRef = useRef(useRouter());
+  const userStoreRef = useRef(useUserStore());
 
-  const createUserResult = useCreateUser();
-  const fetchSelfResult = useFetchSelf();
+  const createUserResultRef = useRef(useCreateUser());
+  const fetchSelfResultRef = useRef(useFetchSelf());
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log("User changed", user);
       if (!user) {
-        userStore.removeUser();
-        router.push("/login", { scroll: false });
+        userStoreRef.current.removeUser();
+        routerRef.current.push("/login", { scroll: false });
         return;
       }
 
-      if (userStore.user) {
+      if (userStoreRef.current.user) {
         return;
       }
 
@@ -47,21 +48,24 @@ export default function FirebaseAuthProvider({
           avatar: user.photoURL,
         };
 
-        const createdUser = await createUserResult.mutateAsync(userToCreate);
-        userStore.setUser(createdUser);
+        const createdUser = await createUserResultRef.current.mutateAsync(
+          userToCreate
+        );
+        userStoreRef.current.setUser(createdUser);
       } else {
-        const userFromDbResponse = await fetchSelfResult.refetch();
+        const userFromDbResponse = await fetchSelfResultRef.current.refetch();
 
         if (!userFromDbResponse.data) {
           throw new Error("User not found in database");
         }
 
-        userStore.setUser(userFromDbResponse.data);
+        userStoreRef.current.setUser(userFromDbResponse.data);
       }
+      routerRef.current.push("/");
     });
 
     return () => unsubscribe();
-  }, [createUserResult, fetchSelfResult, router, userStore]);
+  }, [routerRef, userStoreRef, createUserResultRef, fetchSelfResultRef]);
 
   return <>{children}</>;
 }

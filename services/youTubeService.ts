@@ -1,6 +1,9 @@
 import { axiosRequester } from "@/queries/axiosRequester";
 import { captionSchema } from "@/schemas/captionSchema";
-import { videoDataFromYouTubeSchema } from "@/schemas/videoDataFromYouTube";
+import {
+  videoDataFromYouTubeSchema,
+  youTubeSearchResponseSchemaItem,
+} from "@/schemas/videoDataFromYouTube";
 import { z } from "zod";
 import jsCookie from "js-cookie";
 
@@ -25,6 +28,22 @@ export async function fetchVideoDataFromYouTube(videoId: string) {
       `/youtube/${videoId}/fetch_video_data_from_youtube/`
     );
     return videoDataFromYouTubeSchema.parse(response.data);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function searchYouTubeVideos(
+  query: string,
+  startIndex: number = 0
+) {
+  const token = jsCookie.get("token");
+
+  try {
+    const response = await axiosRequester(token).get(
+      `/youtube/search/${query}/${startIndex}`
+    );
+    return z.array(youTubeSearchResponseSchemaItem).parse(response.data);
   } catch (error) {
     throw error;
   }

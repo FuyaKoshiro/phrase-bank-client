@@ -1,5 +1,6 @@
 "use client";
 
+import FirebaseAuthProvider from "./FirebaseAuthProvider";
 import { ClientProvider } from "./QueryClientProvider";
 
 interface ProvidersProps {
@@ -8,6 +9,8 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
   return (
-      <ClientProvider>{children}</ClientProvider>
+    <ClientProvider>
+      <FirebaseAuthProvider>{children}</FirebaseAuthProvider>
+    </ClientProvider>
   );
 }
