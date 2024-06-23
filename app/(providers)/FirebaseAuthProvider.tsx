@@ -23,7 +23,6 @@ export default function FirebaseAuthProvider({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log("User changed", user);
       if (!user) {
         userStoreRef.current.removeUser();
         routerRef.current.push("/login", { scroll: false });

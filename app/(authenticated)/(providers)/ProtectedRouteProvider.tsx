@@ -14,12 +14,10 @@ function ProtectedRouteProvider({ children }: ProtectedRouteProviderProps) {
   const router = useRouter();
 
   if (!userStore.user) {
-    console.log("User not found, redirecting to login");
     router.push("/login", { scroll: false });
     return;
   }
 
-  console.log("User found, rendering children");
   return <>{children}</>;
 }
 
