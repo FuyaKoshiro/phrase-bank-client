@@ -2,32 +2,30 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
-import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { OnProgressProps } from "react-player/base";
 import { useFetchVideoDataFromYouTube } from "@/queries/youTube/youTube";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import useVideoPlayer from "../(hooks)/useVideoPlayer";
 
 export default function VideoPlayer() {
   const [windowIsReady, setWindowIsReady] = useState(false);
 
   const videoPlayerRef = useRef<ReactPlayer>(null);
 
-  const videoPlayerStore = useVideoPlayerStore();
+  const videoPlayer = useVideoPlayer();
 
   const fetchVideoDataFromYouTubeResult = useFetchVideoDataFromYouTube(
-    videoPlayerStore.videoId
+    videoPlayer.videoId
   );
 
   useEffect(() => {
     if (
       fetchVideoDataFromYouTubeResult.data &&
-      fetchVideoDataFromYouTubeResult.data.title !== videoPlayerStore.videoTitle
+      fetchVideoDataFromYouTubeResult.data.title !== videoPlayer.videoTitle
     ) {
-      videoPlayerStore.setVideoTitle(
-        fetchVideoDataFromYouTubeResult.data.title
-      );
+      videoPlayer.setVideoTitle(fetchVideoDataFromYouTubeResult.data.title);
     }
-  }, [fetchVideoDataFromYouTubeResult.data, videoPlayerStore]);
+  }, [fetchVideoDataFromYouTubeResult.data, videoPlayer]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -36,13 +34,13 @@ export default function VideoPlayer() {
   }, []);
 
   useEffect(() => {
-    if (videoPlayerStore.seekToSeconds === null) {
+    if (videoPlayer.seekToSeconds === null) {
       return;
     }
 
-    seekTo(videoPlayerStore.seekToSeconds);
-    videoPlayerStore.setSeekToSeconds(null);
-  }, [videoPlayerStore]);
+    seekTo(videoPlayer.seekToSeconds);
+    videoPlayer.setSeekToSeconds(null);
+  }, [videoPlayer]);
 
   function seekTo(seconds: number) {
     videoPlayerRef.current?.seekTo(seconds);
@@ -50,10 +48,10 @@ export default function VideoPlayer() {
 
   function handleOnProgress(progress: OnProgressProps) {
     const roundedPlayedSeconds = Math.round(progress.playedSeconds);
-    videoPlayerStore.setSecondPlaying(roundedPlayedSeconds);
+    videoPlayer.setSecondPlaying(roundedPlayedSeconds);
   }
 
-  const youTubeVideoUrl = `https://www.youtube.com/watch?v=${videoPlayerStore.videoId}`;
+  const youTubeVideoUrl = `https://www.youtube.com/watch?v=${videoPlayer.videoId}`;
 
   return (
     <div className="flex flex-col items-start h-full px-5 lg:px-12">
@@ -66,7 +64,7 @@ export default function VideoPlayer() {
       </div>
 
       <div className="h-full w-full rounded-3xl overflow-hidden">
-        {windowIsReady && videoPlayerStore.videoId ? (
+        {windowIsReady && videoPlayer.videoId ? (
           <ReactPlayer
             ref={videoPlayerRef}
             url={youTubeVideoUrl}

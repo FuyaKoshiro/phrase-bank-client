@@ -2,7 +2,6 @@
 
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import React from "react";
-import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { transformSecondsToTime } from "./utils/sideNavBarHelpers";
 import { TypographySmall } from "@/components/ui/typographySmall";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import {
   useFetchPhrasesByUserId,
 } from "@/queries/phrase/usePhrase";
 import { Loading } from "@lemonsqueezy/wedges";
+import useVideoPlayer from "../(hooks)/useVideoPlayer";
 
 function SavedList() {
   const [deletedPhraseId, setDeletedPhraseId] = React.useState<string>("");
@@ -18,8 +18,8 @@ function SavedList() {
   const fetchPhrasesByUserIdResult = useFetchPhrasesByUserId();
   const deletePhraseResult = useDeletePhrase();
 
-  const videoPlayerStore = useVideoPlayerStore();
-  const videoId = videoPlayerStore.videoId;
+  const videoPlayer = useVideoPlayer();
+  const videoId = videoPlayer.videoId;
 
   const phrasesBelongingToVideo =
     fetchPhrasesByUserIdResult.data &&
@@ -34,7 +34,7 @@ function SavedList() {
   );
 
   function handleClickPhraseCard(start: number) {
-    videoPlayerStore.setSeekToSeconds(start);
+    videoPlayer.setSeekToSeconds(start);
   }
 
   async function handleClickDeletePhraseButton(phraseId: string) {

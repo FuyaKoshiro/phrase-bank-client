@@ -2,7 +2,6 @@
 
 import { useFetchCaptions } from "@/queries/youTube/youTube";
 import React, { useEffect, useRef } from "react";
-import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { useUserStore } from "@/stores/userStore";
 import { useCreateVideo, useFetchVideos } from "@/queries/video/video";
 import { Button } from "@/components/ui/button";
@@ -15,12 +14,13 @@ import { checkIfVideoExists, VideoToCreateType } from "@/services/videoService";
 import { Caption as CaptionType } from "@/schemas/captionSchema";
 import { checkIfPhraseExists } from "@/services/phraseService";
 import { Loading } from "@lemonsqueezy/wedges";
+import useVideoPlayer from "../(hooks)/useVideoPlayer";
 
 function Caption() {
-  const videoPlayerStore = useVideoPlayerStore();
+  const videoPlayer = useVideoPlayer();
   const userStore = useUserStore();
 
-  const videoId = videoPlayerStore.videoId;
+  const videoId = videoPlayer.videoId;
   const userId = userStore.user?.id;
 
   const fetchCaptionsResult = useFetchCaptions(videoId);
@@ -37,7 +37,7 @@ function Caption() {
 
   const playingPhraseRef = useRef<HTMLDivElement>(null);
 
-  const secondPlaying = videoPlayerStore.secondPlaying;
+  const secondPlaying = videoPlayer.secondPlaying;
   const indexPlaying = fetchCaptionsResult.data?.findIndex((caption) => {
     return secondPlaying >= caption.start && secondPlaying <= caption.end;
   });
@@ -70,7 +70,7 @@ function Caption() {
     if (!videoExists) {
       await createVideoResult.mutateAsync({
         id: videoId,
-        title: videoPlayerStore.videoTitle,
+        title: videoPlayer.videoTitle,
       } as VideoToCreateType);
       await fetchVideosResult.refetch();
     }

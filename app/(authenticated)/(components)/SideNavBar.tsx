@@ -9,7 +9,6 @@ import {
   videoIdSchema,
 } from "./utils/sideNavBarHelpers";
 import { useUserStore } from "@/stores/userStore";
-import { useVideoPlayerStore } from "../(stores)/videoPlayerStore";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,15 +31,15 @@ import { useFetchPhrasesByUserId } from "@/queries/phrase/usePhrase";
 import { Skeleton } from "@mui/material";
 import { Loading } from "@lemonsqueezy/wedges";
 import { TypographySmall } from "@/components/ui/typographySmall";
+import useVideoPlayer from "../(hooks)/useVideoPlayer";
 
 export default function SideNavBar() {
-  const [open, setOpen] = useState<boolean>(false);
   const [videoId, setVideoId] = useState<string>("");
   const [videoIdValidationError, setVideoIdValidationError] =
     useState<string>("");
 
   const userStore = useUserStore();
-  const videoPlayerStore = useVideoPlayerStore();
+  const videoPlayer = useVideoPlayer();
 
   const signOutResult = useSignOut();
   const fetchPhrasesByUserIdResult = useFetchPhrasesByUserId();
@@ -61,7 +60,7 @@ export default function SideNavBar() {
       : null;
 
   async function handleClickVideoCardButton(videoId: string) {
-    videoPlayerStore.setVideoId(videoId);
+    videoPlayer.setVideoId(videoId);
   }
 
   async function handleClickSignOutButton() {
@@ -85,12 +84,11 @@ export default function SideNavBar() {
     if (videoIdValidationError) {
       return;
     }
-    videoPlayerStore.setVideoId(videoId);
+    videoPlayer.setVideoId(videoId);
   }
 
   return (
     <div className="h-full w-full flex flex-col justify-between items-stretch bg-gray-50">
-      <p className=" text-6xl text-black">{open}</p>
       <div className="flex-1 w-full min-h-0 overflow-y-auto">
         <Dialog>
           <DialogTrigger className="hover:bg-accent hover:text-accent-foreground w-full p-5 flex flex-row gap-2 justify-between items-center">
