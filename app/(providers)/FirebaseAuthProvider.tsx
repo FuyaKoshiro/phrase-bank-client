@@ -5,7 +5,7 @@ import { auth } from "@/configs/firebase";
 import { useUserStore } from "@/stores/userStore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { checkIfUserExists, UserToCreateType } from "@/services/userService";
 
 interface FirebaseAuthProviderProps {
@@ -23,6 +23,7 @@ export default function FirebaseAuthProvider({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log("User changed", user);
       if (!user) {
         userStore.removeUser();
         router.push("/login", { scroll: false });
@@ -58,10 +59,11 @@ export default function FirebaseAuthProvider({
 
         userStore.setUser(userFromDbResponse.data);
       }
+      router.push("/");
     });
 
     return () => unsubscribe();
-  }, [createUserResult, fetchSelfResult, router, userStore]);
+  }, []);
 
   return <>{children}</>;
 }
