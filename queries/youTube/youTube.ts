@@ -26,12 +26,10 @@ export function useFetchVideoDataFromYouTube(videoId: string | null) {
   });
 }
 
-// Unable to run automatically.
-// To run this, use refetch().
-export function useSearchYouTubeVideos(query: string, startIndex?: number) {
+export function useSearchYouTubeVideos(query: string) {
   return useQuery({
-    queryKey: ["searchYouTubeVideos", query, startIndex],
-    queryFn: async () => searchYouTubeVideos(query, startIndex),
-    enabled: false,
+    queryKey: ["searchYouTubeVideos", query],
+    queryFn: async () => searchYouTubeVideos(query),
+    enabled: !!query,
   });
 }

@@ -11,9 +11,19 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Card } from "@/components/ui/card";
 import { TypographyH4 } from "@/components/ui/typographyH4";
+import SearchBox from "./(components)/SearchBox";
+import useVideoPlayer from "./(hooks)/useVideoPlayer";
+import SearchResult from "./(components)/SearchResult";
 
 export default function HomePage() {
   const [openSavedList, setOpenSavedList] = useState(false);
+  const [videoSearchQuery, setVideoSearchQuery] = useState("");
+
+  const videoPlayer = useVideoPlayer();
+
+  function handleSubmitSearch(query: string) {
+    setVideoSearchQuery(query);
+  }
 
   function handleClickOpenSavedList() {
     setOpenSavedList(true);
@@ -46,18 +56,34 @@ export default function HomePage() {
 
       {/* VideoPlayer */}
       <div className="w-[100%] lg:flex-1 h-full flex flex-col">
-        <div className="flex-1 lg:h-[66%]">
-          <VideoPlayer />
+        <div className="p-2 w-1/2">
+          <SearchBox onSubmit={handleSubmitSearch} />
         </div>
-        <div className="h-96 lg:h-[34%]">
-          <Caption />
-        </div>
+
+        {!videoPlayer.videoId ? (
+          <div className="flex-1">
+            <SearchResult query={videoSearchQuery} />
+          </div>
+        ) : null}
+
+        {videoPlayer.videoId ? (
+          <>
+            <div className="flex-1 lg:h-[66%]">
+              <VideoPlayer />
+            </div>
+            <div className="h-96 lg:h-[34%]">
+              <Caption />
+            </div>
+          </>
+        ) : null}
       </div>
 
       {/* Saved List */}
-      <div className="block lg:hidden absolute bottom-5 right-5">
-        <Button onClick={handleClickOpenSavedList}>Saved List</Button>
-      </div>
+      {!videoPlayer.videoId ? (
+        <div className="block lg:hidden absolute bottom-5 right-5">
+          <Button onClick={handleClickOpenSavedList}>Saved List</Button>
+        </div>
+      ) : null}
 
       {openSavedList ? (
         <div className="absolute bottom-4 right-3 left-3 flex-col lg:w-[25%]">
