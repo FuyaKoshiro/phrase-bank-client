@@ -17,7 +17,6 @@ export function useFetchVideos(ids: string[] | undefined) {
   return useQuery({
     queryKey: videoQueryKeys.videos,
     queryFn: () => {
-      console.log("fetching videos", ids);
       if (!ids) {
         throw new Error("Video ids are not found.");
       }
