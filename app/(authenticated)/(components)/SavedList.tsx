@@ -2,7 +2,7 @@
 
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import React from "react";
-import { transformSecondsToTime } from "./utils/sideNavBarHelpers";
+import { transformSecondsToTime } from "./(utils)/helpers";
 import { TypographySmall } from "@/components/ui/typographySmall";
 import { Button } from "@/components/ui/button";
 import {

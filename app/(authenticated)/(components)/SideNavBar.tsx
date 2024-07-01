@@ -7,7 +7,7 @@ import {
   extractVideoIdFromUrl,
   getSavedVideoTitles,
   videoIdSchema,
-} from "./utils/sideNavBarHelpers";
+} from "./(utils)/helpers";
 import { useUserStore } from "@/stores/userStore";
 import { Button } from "@/components/ui/button";
 import {

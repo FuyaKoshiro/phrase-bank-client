@@ -18,6 +18,7 @@ import { YouTubeSearchResponseItem } from "@/schemas/videoDataFromYouTube";
 import Image from "next/image";
 import { TypographySmall } from "@/components/ui/typographySmall";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { convertTimestampToDateString } from "./(components)/(utils)/helpers";
 
 export default function HomePage() {
   const [openSavedList, setOpenSavedList] = useState(false);
@@ -112,12 +113,11 @@ export default function HomePage() {
 
                   <div className="h-2" />
 
-                  <div className="flex flex-row gap-2">
+                  <div className="flex flex-row gap-1">
                     <TypographySmall className="text-black/50">
-                      Published at {video.publishedAt}
+                      Published at{" "}
+                      {convertTimestampToDateString(video.publishedAt)}
                     </TypographySmall>
-
-                    <div className="h-5" />
 
                     <TypographySmall className="text-black/50">
                       By {video.channelTitle}
