@@ -4,7 +4,6 @@ import jsCookie from "js-cookie";
 
 export async function fetchSelf() {
   const token = jsCookie.get("token");
-  console.log("fetchSelf -> token", token);
 
   try {
     const response = await axiosRequester(token).get("/user/");

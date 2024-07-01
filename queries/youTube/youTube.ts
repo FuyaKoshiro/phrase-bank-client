@@ -15,6 +15,7 @@ export function useFetchCaptions(videoId: string | null) {
     queryKey: captionQueryKeys.captions(videoId!),
     queryFn: () => fetchCaptions(videoId!),
     enabled: !!videoId,
+    retry: false,
   });
 }
 
@@ -23,6 +24,7 @@ export function useFetchVideoDataFromYouTube(videoId: string | null) {
     queryKey: captionQueryKeys.videoData(videoId!),
     queryFn: async () => fetchVideoDataFromYouTube(videoId!),
     enabled: !!videoId,
+    retry: false,
   });
 }
 
@@ -31,5 +33,6 @@ export function useSearchYouTubeVideos(query: string) {
     queryKey: ["searchYouTubeVideos", query],
     queryFn: async () => searchYouTubeVideos(query),
     enabled: !!query,
+    retry: false,
   });
 }

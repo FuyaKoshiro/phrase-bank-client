@@ -23,6 +23,7 @@ export function useFetchVideos(ids: string[] | undefined) {
       return fetchVideos(ids);
     },
     enabled: ids && ids.length > 0,
+    retry: false,
   });
 }
 
