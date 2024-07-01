@@ -40,6 +40,10 @@ export default function HomePage() {
     setOpenSavedList(false);
   }
 
+  function handleClickVideoCard(videoId: string) {
+    videoPlayer.setVideoId(videoId);
+  }
+
   function renderSearchResult(
     query: string,
     isLoading: boolean,
@@ -93,6 +97,7 @@ export default function HomePage() {
             return (
               <Button
                 key={video.videoId}
+                onClick={() => handleClickVideoCard(video.videoId)}
                 variant="outline"
                 className="h-80 w-full flex flex-row gap-2 p-0"
               >
@@ -103,6 +108,7 @@ export default function HomePage() {
                     alt="Thumbnail"
                     className="rounded-md"
                     quality={100}
+                    sizes="100%"
                   />
                 </div>
 
