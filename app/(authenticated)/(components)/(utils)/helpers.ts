@@ -33,7 +33,7 @@ export function getSavedVideoTitles(
   return savedVideosWithDate.sort((a, b) => {
     const aTime = new Date(a.latestPhraseSavedDate);
     const bTime = new Date(b.latestPhraseSavedDate);
-    return aTime.getTime() - bTime.getTime();
+    return bTime.getTime() - aTime.getTime();
   });
 }
 
@@ -66,4 +66,51 @@ export function transformSecondsToTime(seconds: number) {
     minutes.toString().padStart(2, "0"),
     seconds.toString().padStart(2, "0"),
   ].join(":");
+}
+
+export function convertTimestampToDateString(timestamp: string): string {
+  const date = new Date(timestamp);
+  const now = new Date();
+
+  const diffInMilliseconds = now.getTime() - date.getTime();
+  const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInSeconds < 3600) {
+    return "just now";
+  } else if (diffInHours < 24 && now.getDate() === date.getDate()) {
+    return `${diffInHours} hours ago`;
+  } else if (diffInDays === 1) {
+    return "yesterday";
+  } else {
+    return formatDate(date);
+  }
+}
+
+export function formatDate(date: Date): string {
+  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getFullYear();
+
+  const daySuffix = getDaySuffix(day);
+
+  return `${month} ${day}${daySuffix} ${year}`;
+}
+
+export function getDaySuffix(day: number): string {
+  if (day >= 11 && day <= 13) {
+    return "th";
+  }
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
 }

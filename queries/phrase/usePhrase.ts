@@ -15,6 +15,7 @@ export function useFetchPhrasesByUserId() {
   return useQuery({
     queryKey: phraseQueryKeys.phrases,
     queryFn: fetchPhrasesByUserId,
+    retry: false,
   });
 }
 

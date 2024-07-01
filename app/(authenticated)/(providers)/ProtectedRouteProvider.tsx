@@ -2,21 +2,23 @@
 
 import { useUserStore } from "@/stores/userStore";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 interface ProtectedRouteProviderProps {
   children: React.ReactNode;
 }
 
 function ProtectedRouteProvider({ children }: ProtectedRouteProviderProps) {
-  const userStore = useUserStore();
+  const userStoreRef = useRef(useUserStore());
 
-  const router = useRouter();
+  const routerRef = useRef(useRouter());
 
-  if (!userStore.user) {
-    router.push("/login", { scroll: false });
-    return;
-  }
+  useEffect(() => {
+    if (!userStoreRef.current.user) {
+      routerRef.current.push("/login", { scroll: false });
+      return;
+    }
+  }, [routerRef, userStoreRef]);
 
   return <>{children}</>;
 }
