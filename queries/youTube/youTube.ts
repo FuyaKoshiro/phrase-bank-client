@@ -34,5 +34,7 @@ export function useSearchYouTubeVideos(query: string) {
     queryFn: async () => searchYouTubeVideos(query),
     enabled: !!query,
     retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 }
