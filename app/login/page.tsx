@@ -100,7 +100,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div className="h-20" />
+      {/* <div className="h-20" />
 
       <div className="flex flex-col lg:flex-row items-center">
         <video className="w-full lg:w-1/2 rounded-lg" controls autoPlay muted>
@@ -110,7 +110,7 @@ export default function LoginPage() {
         <div className="w-full flex flex-col gap-2 px-10 py-20 lg:py-0 text-center">
           <TypographyH4>Easy Click to Save Clips</TypographyH4>
         </div>
-      </div>
+      </div> */}
 
       <div className="h-5 lg:h-20" />
 
