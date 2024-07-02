@@ -1,24 +1,22 @@
 "use client";
 
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Caption from "./(components)/Caption";
 import SavedList from "./(components)/SavedList";
 import SideNavBar from "./(components)/SideNavBar";
 import VideoPlayer from "./(components)/VideoPlayer";
 import MenuIcon from "@mui/icons-material/Menu";
-import ClearIcon from "@mui/icons-material/Clear";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Card } from "@/components/ui/card";
 import { TypographyH4 } from "@/components/ui/typographyH4";
 import SearchBox from "./(components)/SearchBox";
 import useVideoPlayer from "./(hooks)/useVideoPlayer";
 import { useSearchYouTubeVideos } from "@/queries/youTube/youTube";
 import { useMediaQuery } from "@mui/material";
 import SearchResult from "./(components)/SearchResult";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 function RenderForMobile() {
-  const [openSavedList, setOpenSavedList] = useState(false);
   const [videoSearchQuery, setVideoSearchQuery] = useState("");
 
   const searchYouTubeVideosResult = useSearchYouTubeVideos(videoSearchQuery);
@@ -28,10 +26,6 @@ function RenderForMobile() {
   const handleSubmitSearch = useCallback((query: string) => {
     setVideoSearchQuery(query);
   }, []);
-
-  const handleClickOpenSavedList = () => {
-    setOpenSavedList((prev) => !prev);
-  };
 
   const handleClickVideoCard = (videoId: string) => {
     videoPlayer.setVideoId(videoId);
@@ -81,28 +75,15 @@ function RenderForMobile() {
         </>
       ) : null}
 
-      {openSavedList ? (
-        <div className="absolute bottom-4 right-3 left-3 flex-col flex">
-          <Card className="shadow-none h-80 relative">
-            <Button
-              size="icon"
-              onClick={handleClickOpenSavedList}
-              className="absolute top-2 right-2 z-10 bg-white"
-            >
-              <ClearIcon className="text-black" />
-            </Button>
-
-            <div className="flex-1 h-full flex-col p-5">
-              <SavedList />
-            </div>
-          </Card>
-        </div>
-      ) : null}
-
-      {!videoPlayer.videoId ? (
-        <div className="absolute bottom-5 right-5">
-          <Button onClick={handleClickOpenSavedList}>Saved List</Button>
-        </div>
+      {videoPlayer.videoId ? (
+        <Drawer>
+          <DrawerTrigger asChild>
+            <Button className="absolute bottom-5 right-5">Saved List</Button>
+          </DrawerTrigger>
+          <DrawerContent className="h-96">
+            <SavedList />
+          </DrawerContent>
+        </Drawer>
       ) : null}
     </div>
   );
@@ -130,7 +111,7 @@ function RenderForDesktop() {
       </div>
 
       <div className="flex-1 h-full flex flex-col">
-        <div className="w-1/2">
+        <div className="w-2/3 p-3">
           <SearchBox onSubmit={handleSubmitSearch} />
         </div>
 
