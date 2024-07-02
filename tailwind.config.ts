@@ -24,6 +24,9 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
+      scale: {
+        98: "0.98",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

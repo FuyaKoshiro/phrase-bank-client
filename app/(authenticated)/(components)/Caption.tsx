@@ -4,7 +4,6 @@ import { useFetchCaptions } from "@/queries/youTube/youTube";
 import React, { useEffect, useRef } from "react";
 import { useUserStore } from "@/stores/userStore";
 import { useCreateVideo, useFetchVideos } from "@/queries/video/video";
-import { Button } from "@/components/ui/button";
 import { TypographyP } from "@/components/ui/typographyP";
 import {
   useCreatePhrase,
@@ -17,6 +16,10 @@ import { Loading } from "@lemonsqueezy/wedges";
 import useVideoPlayer from "../(hooks)/useVideoPlayer";
 
 function Caption() {
+  const [phraseIndexToBeSaved, setPhraseIndexToBeSaved] = React.useState<
+    number | undefined
+  >(undefined);
+
   const videoPlayer = useVideoPlayer();
   const userStore = useUserStore();
 
@@ -55,8 +58,10 @@ function Caption() {
   async function handleClickPhraseButton(
     userId: string,
     videoId: string,
-    caption: CaptionType
+    caption: CaptionType,
+    index: number
   ) {
+    setPhraseIndexToBeSaved(index);
     const phrase = {
       userId,
       videoId,
@@ -81,6 +86,8 @@ function Caption() {
       await createPhraseResult.mutateAsync(phrase);
       await fetchPhrasesByUserIdResult.refetch();
     }
+
+    setPhraseIndexToBeSaved(undefined);
   }
 
   if (!userId || !videoId) {
@@ -106,48 +113,55 @@ function Caption() {
                   ref={
                     caption.index === indexToHighlight ? playingPhraseRef : null
                   }
-                  className="w-full"
+                  className="w-full relative"
                 >
                   {caption.index === indexToHighlight ? (
                     <button
-                      className="px-4 py-1 w-full bg-black rounded-md hover:bg-black/20"
+                      className="flex flex-row items-center gap-2 px-4 py-1 w-full bg-black rounded-md hover:bg-black/20 active:scale-98 transition duration-150 transform"
                       onClick={() =>
                         handleClickPhraseButton(
                           userId,
                           videoId,
-                          fetchCaptionsResult.data[caption.index]
+                          fetchCaptionsResult.data[caption.index],
+                          caption.index
                         )
                       }
                     >
                       <TypographyP className="text-start text-white">
                         {caption.text}
                       </TypographyP>
+
+                      {createPhraseResult.isLoading &&
+                      caption.index === phraseIndexToBeSaved ? (
+                        <Loading type="dots" size="xxs" />
+                      ) : null}
                     </button>
                   ) : (
                     <button
-                      className="px-4 py-1 w-full rounded-md hover:bg-accent"
+                      className="flex flex-row items-center gap-2 px-4 py-1 w-full rounded-md hover:bg-accent active:scale-98 transition duration-150 transform"
                       onClick={() =>
                         handleClickPhraseButton(
                           userId,
                           videoId,
-                          fetchCaptionsResult.data[caption.index]
+                          fetchCaptionsResult.data[caption.index],
+                          caption.index
                         )
                       }
                     >
                       <TypographyP className="text-start">
                         {caption.text}
                       </TypographyP>
+
+                      {createPhraseResult.isLoading &&
+                      caption.index === phraseIndexToBeSaved ? (
+                        <Loading type="dots" size="xxs" />
+                      ) : null}
                     </button>
                   )}
                 </div>
               );
             })
           : null}
-      </div>
-      <div className="absolute h-20 w-20 top-10 right-10">
-        {createPhraseResult.isLoading ? (
-          <Loading type="dots" size="xs" />
-        ) : null}
       </div>
     </div>
   );
