@@ -116,7 +116,7 @@ function RenderForDesktop() {
         </div>
 
         {!videoPlayer.videoId ? (
-          <div className="flex-1 p-3">
+          <div className="flex-1 p-3 overflow-hidden">
             <SearchResult
               query={videoSearchQuery}
               isLoading={searchYouTubeVideosResult.isLoading}

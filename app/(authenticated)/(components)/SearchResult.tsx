@@ -6,6 +6,8 @@ import { YouTubeSearchResponseItem } from "@/schemas/videoDataFromYouTube";
 import Image from "next/image";
 import React from "react";
 import { convertTimestampToDateString } from "./(utils)/helpers";
+import { Separator } from "@/components/ui/separator";
+import { TypographyP } from "@/components/ui/typographyP";
 
 interface SearchResultProps {
   query: string;
@@ -57,56 +59,59 @@ function SearchResult({
   }
 
   return (
-    <div className="overflow-hidden">
-      <ScrollArea className="w-full max-h-full flex flex-col">
-        {data.map((video) => {
-          return (
-            <Button
-              key={video.videoId}
-              onClick={() => onClickVideoCard(video.videoId)}
-              variant="outline"
-              className="h-80 w-full flex flex-row gap-2 p-0"
-            >
-              <div className="relative w-2/5 h-full">
-                <Image
-                  src={video.thumbnail.url}
-                  fill
-                  alt="Thumbnail"
-                  className="rounded-md"
-                  quality={100}
-                  sizes="100%"
-                />
-              </div>
+    <ScrollArea className="w-full max-h-full flex flex-col">
+      {data.map((video) => {
+        return (
+          <Button
+            key={video.videoId}
+            onClick={() => onClickVideoCard(video.videoId)}
+            variant="outline"
+            className="h-80 w-full flex flex-col items-start sm:justify-start sm:flex-row sm:gap-2 p-0"
+          >
+            <div className="flex-1 sm:flex-none relative w-full sm:w-2/5 sm:h-full">
+              <Image
+                src={video.thumbnail.url}
+                fill
+                alt="Thumbnail"
+                className="rounded-md"
+                quality={100}
+                sizes="100%"
+              />
+            </div>
 
-              <div className="flex-1 flex flex-col items-start justify-start h-full overflow-hidden p-5">
-                <TypographyH4 className="text-start text-wrap">
-                  {video.title}
-                </TypographyH4>
+            <div className="flex flex-col items-start justify-start sm:h-full overflow-hidden p-3 sm:p-5">
+              <TypographyH4 className="text-start text-wrap hidden sm:block">
+                {video.title}
+              </TypographyH4>
 
-                <div className="h-2" />
+              <p className="text-start text-wrap text-lg sm:hidden line-clamp-1">
+                {video.title}
+              </p>
 
-                <div className="flex flex-row gap-1">
-                  <TypographySmall className="text-black/50">
-                    Published at{" "}
-                    {convertTimestampToDateString(video.publishedAt)}
-                  </TypographySmall>
+              <div className="sm:h-2" />
 
-                  <TypographySmall className="text-black/50">
-                    By {video.channelTitle}
-                  </TypographySmall>
-                </div>
+              <div className="flex flex-row gap-3">
+                <TypographySmall className="text-black/50">
+                  {video.channelTitle}
+                </TypographySmall>
 
-                <div className="h-8" />
+                <Separator orientation="vertical" />
 
-                <TypographySmall className="text-black/50 text-wrap text-start">
-                  {video.description}
+                <TypographySmall className="text-black/50">
+                  {convertTimestampToDateString(video.publishedAt)}
                 </TypographySmall>
               </div>
-            </Button>
-          );
-        })}
-      </ScrollArea>
-    </div>
+
+              <div className="hidden sm:block sm:h-8" />
+
+              <TypographySmall className="hidden sm:block text-black/50 text-wrap text-start">
+                {video.description}
+              </TypographySmall>
+            </div>
+          </Button>
+        );
+      })}
+    </ScrollArea>
   );
 }
 
