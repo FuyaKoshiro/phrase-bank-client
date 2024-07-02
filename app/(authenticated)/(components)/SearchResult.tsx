@@ -8,6 +8,7 @@ import React from "react";
 import { convertTimestampToDateString } from "./(utils)/helpers";
 import { Separator } from "@/components/ui/separator";
 import { TypographyP } from "@/components/ui/typographyP";
+import { Loading } from "@lemonsqueezy/wedges";
 
 interface SearchResultProps {
   query: string;
@@ -35,7 +36,7 @@ function SearchResult({
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
-        <TypographyH4 className="text-center">Loading...</TypographyH4>
+        <Loading type="dots" size="xxs" />
       </div>
     );
   }
