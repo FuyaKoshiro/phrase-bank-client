@@ -59,7 +59,7 @@ export default function SideNavBar() {
         )
       : null;
 
-  async function handleClickVideoCardButton(videoId: string) {
+  function handleClickVideoCardButton(videoId: string) {
     videoPlayer.setVideoId(videoId);
   }
 

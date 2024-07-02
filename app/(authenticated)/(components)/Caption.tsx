@@ -96,7 +96,7 @@ function Caption() {
   }
 
   return (
-    <div className="px-12 h-full w-full py-7 flex flex-row gap-2">
+    <div className="px-12 h-full w-full py-7 relative">
       <div className="h-full w-full min-h-0 overflow-y-auto">
         {fetchCaptionsResult.data
           ? fetchCaptionsResult.data.map((caption) => {
@@ -144,7 +144,7 @@ function Caption() {
             })
           : null}
       </div>
-      <div className="self-end h-20 w-20">
+      <div className="absolute h-20 w-20 top-10 right-10">
         {createPhraseResult.isLoading ? (
           <Loading type="dots" size="xs" />
         ) : null}

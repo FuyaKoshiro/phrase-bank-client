@@ -11,6 +11,7 @@ import {
 } from "@/queries/phrase/usePhrase";
 import { Loading } from "@lemonsqueezy/wedges";
 import useVideoPlayer from "../(hooks)/useVideoPlayer";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 function SavedList() {
   const [deletedPhraseId, setDeletedPhraseId] = React.useState<string>("");
@@ -46,17 +47,16 @@ function SavedList() {
 
   if (fetchPhrasesByUserIdResult.isSuccess && phrasesBelongingToVideo?.length) {
     return (
-      <div className="overflow-y-auto h-full min-h-0 gap-2 pr-2">
+      <ScrollArea className="overflow-y-auto h-full min-h-0 gap-2 flex flex-col w-full p-2">
         {sortedPhrasesBelongingToVideo?.map((phrase) => (
           <div
             key={phrase.id}
-            className="w-full flex gap-2 flex-row py-1 px-2 items-center justify-start bg-transparent shadow-none"
+            className="w-full flex gap-2 flex-row py-1 px-2 items-center bg-transparent shadow-none"
           >
             <Button
               variant="ghost"
               size="icon"
               onClick={() => handleClickDeletePhraseButton(phrase.id)}
-              className="flex-none"
               disabled={
                 deletePhraseResult.isLoading && deletedPhraseId === phrase.id
               }
@@ -68,19 +68,17 @@ function SavedList() {
               )}
             </Button>
 
-            <Button
-              variant="ghost"
+            <button
               onClick={() => handleClickPhraseCard(phrase.start)}
-              className="flex-1 overflow-clip text-start text-sm line-clamp-1"
+              className="flex-1 text-start p-2 rounded-md hover:bg-gray-100"
             >
-              {phrase.text}
-            </Button>
-            <p className="flex-none text-sm">
-              {transformSecondsToTime(phrase.start)}
-            </p>
+              <p className="text-sm line-clamp-1">{phrase.text}</p>
+            </button>
+
+            <p className="text-sm">{transformSecondsToTime(phrase.start)}</p>
           </div>
         ))}
-      </div>
+      </ScrollArea>
     );
   } else if (!videoId) {
     return (
