@@ -96,8 +96,8 @@ function Caption() {
   }
 
   return (
-    <div className="px-12 h-full w-full py-7 relative">
-      <div className="h-full w-full min-h-0 overflow-y-auto">
+    <div className="px-4 sm:px-12 h-full w-full py-7 relative">
+      <div className="h-full w-full overflow-hidden overflow-y-auto">
         {fetchCaptionsResult.data
           ? fetchCaptionsResult.data.map((caption) => {
               return (
@@ -106,10 +106,11 @@ function Caption() {
                   ref={
                     caption.index === indexToHighlight ? playingPhraseRef : null
                   }
+                  className="w-full"
                 >
                   {caption.index === indexToHighlight ? (
-                    <Button
-                      className="px-2"
+                    <button
+                      className="px-4 py-1 w-full bg-black rounded-md hover:bg-black/20"
                       onClick={() =>
                         handleClickPhraseButton(
                           userId,
@@ -118,14 +119,13 @@ function Caption() {
                         )
                       }
                     >
-                      <TypographyP className="text-start">
+                      <TypographyP className="text-start text-white">
                         {caption.text}
                       </TypographyP>
-                    </Button>
+                    </button>
                   ) : (
-                    <Button
-                      className="px-2"
-                      variant="ghost"
+                    <button
+                      className="px-4 py-1 w-full rounded-md hover:bg-accent"
                       onClick={() =>
                         handleClickPhraseButton(
                           userId,
@@ -137,7 +137,7 @@ function Caption() {
                       <TypographyP className="text-start">
                         {caption.text}
                       </TypographyP>
-                    </Button>
+                    </button>
                   )}
                 </div>
               );
