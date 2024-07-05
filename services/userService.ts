@@ -1,4 +1,4 @@
-import { axiosRequester } from "@/queries/axiosRequester";
+import { axiosRequester } from "@/services/axiosRequester";
 import { checkIfUserExistsSchema, userSchema } from "@/schemas/userSchema";
 import jsCookie from "js-cookie";
 

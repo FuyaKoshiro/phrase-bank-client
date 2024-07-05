@@ -1,4 +1,4 @@
-import { axiosRequester } from "@/queries/axiosRequester";
+import { axiosRequester } from "@/services/axiosRequester";
 import { checkIfVideoExistsSchema, videoSchema } from "@/schemas/videoSchema";
 import { z } from "zod";
 import jsCookie from "js-cookie";
@@ -36,7 +36,7 @@ export type VideoToCreateType = {
 
 export async function createVideo(video: VideoToCreateType) {
   const token = jsCookie.get("token");
-  
+
   try {
     const response = await axiosRequester(token).post("/video/", {
       videoData: video,
