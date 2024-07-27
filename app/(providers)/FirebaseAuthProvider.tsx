@@ -27,14 +27,15 @@ export default function FirebaseAuthProvider({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setLoading(true);
       if (!user) {
+        setLoading(false);
         userStoreRef.current.removeUser();
         routerRef.current.push("/login", { scroll: false });
         return;
       }
 
       if (userStoreRef.current.user) {
+        setLoading(false);
         return;
       }
 
