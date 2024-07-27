@@ -34,12 +34,12 @@ export type VideoToCreateType = {
   title: string;
 };
 
-export async function createVideo(video: VideoToCreateType) {
+export async function createVideo(videoToCreate: VideoToCreateType) {
   const token = jsCookie.get("token");
 
   try {
     const response = await axiosRequester(token).post("/video/", {
-      videoData: video,
+      videoToCreate,
     });
     return videoSchema.parse(response.data);
   } catch (error) {

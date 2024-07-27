@@ -38,7 +38,7 @@ export async function createUser(user: UserToCreateType) {
 
   try {
     const response = await axiosRequester(token).post("/user/", {
-      ...user,
+      userToCreate: user,
     });
     return userSchema.parse(response.data);
   } catch (error) {

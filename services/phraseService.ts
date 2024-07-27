@@ -48,7 +48,7 @@ export async function createPhrase(phrase: PhraseToCreateType) {
 
   try {
     const response = await axiosRequester(token).post("/phrase/", {
-      ...phrase,
+      phraseToCreate: phrase,
     });
     return phraseSchema.parse(response.data);
   } catch (error) {
