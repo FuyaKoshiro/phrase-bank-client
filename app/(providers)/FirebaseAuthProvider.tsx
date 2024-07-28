@@ -12,7 +12,7 @@ import {
   UserToCreateType,
 } from "@/services/userService";
 import { Loading } from "@lemonsqueezy/wedges";
-import { TypographySmall } from "@/components/ui/typographySmall";
+import jsCookie from "js-cookie";
 
 interface FirebaseAuthProviderProps {
   children: React.ReactNode;
@@ -33,6 +33,9 @@ export default function FirebaseAuthProvider({
         routerRef.current.push("/login", { scroll: false });
         return;
       }
+
+      const token = await user.getIdToken();
+      jsCookie.set("token", token);
 
       if (userStoreRef.current.user) {
         setLoading(false);
@@ -78,7 +81,6 @@ export default function FirebaseAuthProvider({
       <body>
         <div className="h-screen w-screen flex flex-col items-center justify-center gap-4">
           <Loading type="dots" size="xs" />
-          <TypographySmall>Authenticating...</TypographySmall>
         </div>
       </body>
     );
