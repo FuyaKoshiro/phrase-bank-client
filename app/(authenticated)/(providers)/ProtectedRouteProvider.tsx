@@ -2,25 +2,26 @@
 
 import { useUserStore } from "@/stores/userStore";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
 interface ProtectedRouteProviderProps {
   children: React.ReactNode;
 }
 
 function ProtectedRouteProvider({ children }: ProtectedRouteProviderProps) {
-  const userStoreRef = useRef(useUserStore());
+  const router = useRouter();
 
-  const routerRef = useRef(useRouter());
-
-  useEffect(() => {
-    if (!userStoreRef.current.user) {
-      routerRef.current.push("/login", { scroll: false });
-      return;
-    }
-  }, [routerRef, userStoreRef]);
-
-  return <>{children}</>;
+  if (!_checkUserAuthStatus()) {
+    router.push("/login");
+  } else {
+    return <>{children}</>;
+  }
 }
 
 export default ProtectedRouteProvider;
+
+const _checkUserAuthStatus = () => {
+  const user = useUserStore((state) => state.user);
+  console.log("_checkUserAuthStatus", !!user);
+  return !!user;
+};

@@ -3,7 +3,6 @@
 import { auth } from "@/configs/firebase";
 import { useUserStore } from "@/stores/userStore";
 import { onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   checkIfUserExists,
@@ -13,24 +12,26 @@ import {
 } from "@/services/userService";
 import { Loading } from "@lemonsqueezy/wedges";
 import jsCookie from "js-cookie";
+import { useRouter } from "next/navigation";
 
 interface FirebaseAuthProviderProps {
   children: React.ReactNode;
 }
 
+// Check an auth state, and fetch user data, and set user in the store
 export default function FirebaseAuthProvider({
   children,
 }: FirebaseAuthProviderProps) {
   const [loading, setLoading] = useState(true);
-  const routerRef = useRef(useRouter());
   const userStoreRef = useRef(useUserStore());
+  const routerRef = useRef(useRouter());
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log("User", user);
       if (!user) {
         setLoading(false);
         userStoreRef.current.removeUser();
-        routerRef.current.push("/login", { scroll: false });
         return;
       }
 
@@ -69,12 +70,11 @@ export default function FirebaseAuthProvider({
       }
 
       setLoading(false);
-
       routerRef.current.push("/");
     });
 
     return () => unsubscribe();
-  }, [routerRef, userStoreRef]);
+  }, [userStoreRef]);
 
   if (loading) {
     return (
