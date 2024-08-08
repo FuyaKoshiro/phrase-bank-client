@@ -8,7 +8,6 @@ import {
   getSavedVideoTitles,
   videoIdSchema,
 } from "./(utils)/helpers";
-import { useUserStore } from "@/stores/userStore";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,13 +31,14 @@ import { Skeleton } from "@mui/material";
 import { Loading } from "@lemonsqueezy/wedges";
 import { TypographySmall } from "@/components/ui/typographySmall";
 import useVideoPlayer from "../(hooks)/useVideoPlayer";
+import useAuth from "@/app/(hooks)/useAuth";
 
 export default function SideNavBar() {
   const [videoId, setVideoId] = useState<string>("");
   const [videoIdValidationError, setVideoIdValidationError] =
     useState<string>("");
 
-  const userStore = useUserStore();
+  const { user } = useAuth();
   const videoPlayer = useVideoPlayer();
 
   const signOutResult = useSignOut();
@@ -145,13 +145,13 @@ export default function SideNavBar() {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger className="flex flex-row items-center gap-5 w-full py-2 px-4 hover:bg-accent hover:text-accent-foreground">
-          {userStore.user ? (
+          {user ? (
             <>
               <Avatar className="h-5 w-5 bg-accent flex flex-row items-center justify-center">
-                <AvatarImage src={userStore.user?.avatar} alt="User Avatar" />
+                <AvatarImage src={user?.avatar} alt="User Avatar" />
                 <AvatarFallback>G</AvatarFallback>
               </Avatar>
-              <p className="text-start">{userStore.user?.name}</p>
+              <p className="text-start">{user?.name}</p>
             </>
           ) : (
             <>

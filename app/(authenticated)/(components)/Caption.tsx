@@ -2,7 +2,6 @@
 
 import { useFetchCaptions } from "@/queries/youTube/youTube";
 import React, { useEffect, useRef } from "react";
-import { useUserStore } from "@/stores/userStore";
 import { useCreateVideo, useFetchVideos } from "@/queries/video/video";
 import { TypographyP } from "@/components/ui/typographyP";
 import {
@@ -14,6 +13,7 @@ import { Caption as CaptionType } from "@/schemas/captionSchema";
 import { checkIfPhraseExists } from "@/services/phraseService";
 import { Loading } from "@lemonsqueezy/wedges";
 import useVideoPlayer from "../(hooks)/useVideoPlayer";
+import useAuth from "@/app/(hooks)/useAuth";
 
 function Caption() {
   const [phraseIndexToBeSaved, setPhraseIndexToBeSaved] = React.useState<
@@ -21,10 +21,10 @@ function Caption() {
   >(undefined);
 
   const videoPlayer = useVideoPlayer();
-  const userStore = useUserStore();
+  const { user } = useAuth();
 
   const videoId = videoPlayer.videoId;
-  const userId = userStore.user?.id;
+  const userId = user?.id;
 
   const fetchCaptionsResult = useFetchCaptions(videoId);
   const fetchPhrasesByUserIdResult = useFetchPhrasesByUserId();

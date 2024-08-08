@@ -1,6 +1,8 @@
 "use client";
 
-import { useUserStore } from "@/stores/userStore";
+import useAuth from "@/app/(hooks)/useAuth";
+import { TypographySmall } from "@/components/ui/typographySmall";
+import { Loading } from "@lemonsqueezy/wedges";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -9,9 +11,19 @@ interface ProtectedRouteProviderProps {
 }
 
 function ProtectedRouteProvider({ children }: ProtectedRouteProviderProps) {
+  const { user, loading } = useAuth();
   const router = useRouter();
 
-  if (!_checkUserAuthStatus()) {
+  if (loading) {
+    return (
+      <div className="h-screen w-screen flex flex-col items-center justify-center gap-4">
+        <Loading type="dots" size="xs" />
+        <TypographySmall>Authenticating...</TypographySmall>
+      </div>
+    );
+  }
+
+  if (!user) {
     router.push("/login");
   } else {
     return <>{children}</>;
@@ -19,9 +31,3 @@ function ProtectedRouteProvider({ children }: ProtectedRouteProviderProps) {
 }
 
 export default ProtectedRouteProvider;
-
-const _checkUserAuthStatus = () => {
-  const user = useUserStore((state) => state.user);
-  console.log("_checkUserAuthStatus", !!user);
-  return !!user;
-};
